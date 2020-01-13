@@ -1,0 +1,7 @@
+
+.idea/
+node_modules/
+config.js
+public/libs
+public/backup
+public/files

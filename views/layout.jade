@@ -1,0 +1,34 @@
+doctype html
+html
+  head
+    meta(name='viewport',content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+    title= title
+    link(rel='stylesheet',href='../libs/extjs/6.2/classic/theme-#{theme}/resources/theme-#{theme}-all.css')
+    link(rel='stylesheet',href='../libs/extjs/6.2/packages/ux/classic/#{theme}/resources/ux-all.css')
+    link(rel='stylesheet',href='../libs/extjs/6.2/packages/charts/classic/#{theme}/resources/charts-all.css')
+    link(rel='stylesheet',href='../stylesheets/font-awesome.min.css')
+
+    block css
+
+    script(src='../libs/extjs/6.2/ext-all-debug.js')
+    script(src='../libs/extjs/6.2/packages/ux/classic/ux.js')
+    script(src='../libs/extjs/6.2/packages/charts/classic/charts.js')
+    script(src='javascripts/jquery-1.11.0.min.js')
+    script(src='javascripts/sha512.js')
+    block js
+
+  body
+    input#token(type="hidden" value="#{token}")
+    script.
+      $().ready(function () {
+        // save token to chrome browser
+        var token = $('#token').val();
+        if (token == "" || token == undefined)
+          alert('Socket.IO can not ready !');
+        else
+          if(token=="undefined") // open single page
+            console.log('open single page');
+          else
+            localStorage.setItem('tokenEtSpp', token);
+      });
+    block content

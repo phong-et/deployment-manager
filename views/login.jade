@@ -1,0 +1,88 @@
+//
+   Created by hiep on 11/6/2015.
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet',href='libs/bootstrap/3.5.5/css/bootstrap.min.css')
+        link(rel='stylesheet',href='libs/bootstrap/3.5.5/css/bootstrap-theme.min.css')
+        link(rel='stylesheet',href='libs/qtip/2.2.1/jquery.qtip.min.css')
+        link(rel='stylesheet',href='stylesheets/login.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        #hiddenerror(style='display:none')= error
+        // BEGIN # BOOTSNIP INFO
+        .container
+            .row
+                h1.text-center.page-header #{title}
+                p.text-center
+                    a.btn.btn-primary.btn-lg(href='#', role='button', data-toggle='modal', data-target='#login-modal') Sign In / Register
+        // END # BOOTSNIP INFO
+
+        // BEGIN # MODAL LOGIN
+        #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
+            .modal-dialog
+                .modal-content(style='top:55px')
+                    .modal-header(align='center')
+                        img#img_logo.img-circle(src='favicon.ico')
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span.glyphicon.glyphicon-remove(aria-hidden='true')
+                    // Begin # DIV Form
+                    #div-forms
+                        // Begin # Login Form
+                        form#login-form(action='/',method='post')
+                            .modal-body
+                                #div-login-msg
+                                    #icon-login-msg.glyphicon.glyphicon-chevron-right
+                                    span#text-login-msg(style="color:#{statusLoginTextColor}") #{statusLoginText}.
+                                input#login_username.form-control(name='username',type='text', placeholder='Username', required='')
+                                input#login_password.form-control(name='password',type='password', placeholder='Password', required='')
+                                .checkbox
+                                    label
+                                        input(type='checkbox')
+                                        |  Remember me
+                            .modal-footer
+                                div
+                                    button.btn.btn-primary.btn-lg.btn-block(type='submit') Login
+                                div
+                                    button#login_lost_btn.btn.btn-link(type='button') Lost Password?
+                                    button#login_register_btn.btn.btn-link(type='button') Register
+                        // End # Login Form
+                        // Begin | Lost Password Form
+                        form#lost-form(style='display:none;',action='/lost',method='post')
+                            .modal-body
+                                #div-lost-msg
+                                    #icon-lost-msg.glyphicon.glyphicon-chevron-right
+                                    span#text-lost-msg Type your e-mail.
+                                input#lost_email.form-control(name='email',type='text', placeholder='E-Mail', required='')
+                            .modal-footer
+                                div
+                                    button.btn.btn-primary.btn-lg.btn-block(type='submit') Send
+                                div
+                                    button#lost_login_btn.btn.btn-link(type='button') Log In
+                                    button#lost_register_btn.btn.btn-link(type='button') Register
+                        // End | Lost Password Form
+                        // Begin | Register Form
+                        form#register-form(style='display:none;',action='/reg',method='post')
+                            .modal-body
+                                #div-register-msg
+                                    #icon-register-msg.glyphicon.glyphicon-chevron-right
+                                    span#text-register-msg Register an account.
+                                input#register_username.form-control(name='username',type='text', placeholder='Username', required='')
+                                input#register_email.form-control(name='email',type='text', placeholder='E-Mail', required='')
+                                input#register_password.form-control(name='password',type='password', placeholder='Password', required='')
+                            .modal-footer
+                                div
+                                    button.btn.btn-primary.btn-lg.btn-block(type='submit') Register
+                                div
+                                    button#register_login_btn.btn.btn-link(type='button') Log In
+                                    button#register_lost_btn.btn.btn-link(type='button') Lost Password?
+                        // End | Register Form
+                    // End # DIV Form
+        // END # MODAL LOGIN
+        script(src='libs/jquery/jquery-2.1.4.js')
+        script(src='libs/bootstrap/3.5.5/js/bootstrap.min.js')
+        script(src='libs/qtip/2.2.1/jquery.qtip.min.js')
+        script(src='libs/qtip/2.2.1/imagesloaded.pkg.min.js')
+        script(src='javascripts/login.js')
+        script(src='javascripts/sha512.js')

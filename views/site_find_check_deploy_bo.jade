@@ -1,0 +1,24 @@
+//
+   Created by Phillipet on 11/20/2015.
+extends layout
+
+block js
+    script(src='/socket.io/socket.io.js')
+    script.
+        var tokenEtSpp = localStorage.getItem('tokenEtSpp');
+        var socket = io.connect(tokenEtSpp ? ('?token=' + tokenEtSpp) : '', {
+            'forceNew': true
+        });
+block css
+    link(rel='stylesheet',href='../stylesheets/site.css')
+
+block content
+    #gridSubClient
+    #formRDGConfig
+    input#txtUserId(type="hidden" value="#{userId}")
+    input#txtUserName(type="hidden" value="#{userName}")
+    script(src='views/site_find_check_deploy_bo_cdc_phillip7.et.js')
+    script(src='views/site_find_check_deploy_bo.js')
+    script(src='views/site_find_check_deploy_bo_form_upload_manager.js')
+    //script(src='views/site_find_check_deploy_bo_form_setting_user.js')
+    script(src='views/site_find_socketio.js')

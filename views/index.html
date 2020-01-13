@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title></title><link rel="stylesheet" href="../libs/extjs/6.0.0/classic/theme-undefined/resources/theme-undefined-all.css"><link rel="stylesheet" href="../libs/extjs/6.0.0/packages/ux/classic/undefined/resources/ux-all.css"><link rel="stylesheet" href="../libs/extjs/6.0.0/packages/charts/classic/undefined/resources/charts-all.css"><link rel="stylesheet" href="../stylesheets/font-awesome.min.css"><link rel="stylesheet" href="stylesheets/index.css" type="text/css"><link rel="stylesheet" href="stylesheets/style.css" type="text/css"><script src="../libs/extjs/6.0.0/ext-all-debug.js"></script><script src="../libs/extjs/6.0.0/packages/ux/classic/ux.js"></script><script src="../libs/extjs/6.0.0/packages/charts/classic/charts.js"></script><script src="//code.jquery.com/jquery-1.10.1.min.js"></script><script src="javascripts/sha512.js"></script></head><body><input id="token" type="hidden" value="undefined"><script>$().ready(function () {
+  // save token to chrome browser
+  var token = $('#token').val();
+  if (token == "" || token == undefined)
+    alert('Socket.IO can not ready !');
+  else
+    if(token=="undefined") // open single page
+      console.log('open single page');
+    else
+      localStorage.setItem('tokenEtSpp', token);
+});</script><div id="username" style="display:none">undefined -o0o- undefined</div></body></html>

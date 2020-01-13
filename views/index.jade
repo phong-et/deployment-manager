@@ -1,0 +1,18 @@
+extends layout
+
+block js
+
+block css
+  link(rel='stylesheet', href='stylesheets/index.css',type='text/css')
+  link(rel='stylesheet', href='stylesheets/style.css',type='text/css')
+
+block content
+  #username(style='display:none')= username + " -o0o- " + userType
+  if userType == "ad"
+    script(src='views/index_ad.js')
+  else if userType == "fe"
+    script(src='views/index_fe.js')
+  else if userType == "feav"
+    script(src='views/index_fe_av.js')
+  else if userType == "bo"
+    script(src='views/index_bo_av.js')

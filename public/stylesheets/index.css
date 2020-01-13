@@ -1,0 +1,90 @@
+@font-face {
+    font-family: yellowtail;
+    src: url(../fonts/Yellowtail-Regular.ttf);
+}
+
+.app-logo {
+
+    background: url("../images/full_logo_white.png") no-repeat 11px 11px;
+    background-size: 52px;
+    height: 52px;
+    width: 75px;
+    position: absolute !important;
+    left: 0;
+}
+
+.app-title {
+    color: #fff;
+    font-family: helvetica, arial, verdana, sans-serif;
+    padding: 15px 0 10px 0;
+    font-size: 18px;
+    position: absolute !important;
+    left: 75px;
+}
+
+.app-header {
+    background-color: #2a3f5d;
+}
+
+.ks-theme-switcher {
+    background-image: url(../images/options.png);
+    width: 22px;
+    height: 22px;
+    margin-bottom: 25px;
+}
+
+#theme-switcher-combo-labelEl {
+    color: red;
+    font-weight: bold;
+}
+
+.app-header-grad-classic {
+    background: -webkit-linear-gradient(#265186, #1B3A60); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#265186, #1B3A60); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#265186, #1B3A60); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#265186, #1B3A60); /* Standard syntax (must be last) */
+}
+
+.app-header-grad-neptune {
+    background: -webkit-linear-gradient(#8EC239, #739B2E); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#8EC239, #739B2E); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#8EC239, #739B2E); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#8EC239, #739B2E); /* Standard syntax (must be last) */
+    border-bottom-width: 1px !important;
+    border-bottom-color: #567422;
+}
+
+.app-header-grad-triton {
+    background: -webkit-linear-gradient(#4B7FAD, #4B7FAD); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#4B7FAD, #4B7FAD); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#4B7FAD, #4B7FAD); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#4B7FAD, #4B7FAD); /* Standard syntax (must be last) */
+    border-bottom-width: 1px !important;
+    border-bottom-color: #375E80;
+
+}
+
+.app-header-grad-crisp {
+    background: -webkit-linear-gradient(#2A3F5D, #2A3F5D); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#2A3F5D, #2A3F5D); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#2A3F5D, #2A3F5D); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#2A3F5D, #2A3F5D); /* Standard syntax (must be last) */
+}
+
+.app-header-grad-gray {
+    background: -webkit-linear-gradient(#4C4C4C, #1A1A1A); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#4C4C4C, #1A1A1A); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#4C4C4C, #1A1A1A); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#4C4C4C, #1A1A1A); /* Standard syntax (must be last) */
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 15px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-top: 0px;
+    color: #5E5E5E;
+}

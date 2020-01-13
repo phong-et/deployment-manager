@@ -1,0 +1,75 @@
+
+.del{background:url(../images/site/del.png) no-repeat center;}
+a.aUpdate{display:inline-block; margin-top:-5px}
+.findCls{background:url(../images/site/find.png) no-repeat left;}
+.spinCls{background:url(../images/site/finding.gif) no-repeat left;}
+.createCls{background:url(../images/site/rdg.png) no-repeat left;}
+.exportTextCls{background:url(../images/site/exportText.png) no-repeat left;}
+.exportJSonCls{background:url(../images/site/exportJson.png) no-repeat left;}
+.iePortCls{background:url(../images/site/IEPort.png) no-repeat left;}
+.parseJSonCls{background:url(../images/site/parseJson.png) no-repeat left;}
+
+.manageCls{background:url(../images/site/user.png) no-repeat left;}
+body,html{width:100%; height:100%}
+#gridSubClient{}
+.online{ color:green;}
+.offline{color:#A8C841;}
+
+.addUserCls{background:url(../images/addUserCls.png) no-repeat center;}
+.saveCls{background:url(../images/096.png) no-repeat center;}
+.addCls{background:url(../images/103.png) no-repeat center;}
+.cancelCls{background:url(../images/150.png) no-repeat center;}
+.resetCls{background:url(../images/126.png) no-repeat center;}
+
+
+/*
+.checkingCls{background:url(../images/site/checking.gif) no-repeat center;}
+.checkOkCls{background:url(../images/site/checkok.png) no-repeat center;}
+.checkKoCls{background:url(../images/site/checkko.png) no-repeat center;}
+*/
+
+/* site_check_date */
+.checkCls{background:url(../images/site/check.png) no-repeat center;}
+.checkingCls{background:url(../images/site/checking.gif) no-repeat center;}
+.checkOkCls{background:url(../images/site/checkok.png) no-repeat center;}
+.checkKoCls{background:url(../images/site/checkko.png) no-repeat center;}
+
+
+.hasFolderCls{background:url(../images/site/hasFolder.png) no-repeat center;}
+.hasNotFolderCls{background:url(../images/site/hasNotFolder.png) no-repeat center;}
+.x-action-col-cell img.hasNotFolderCls{background:url(../images/site/hasNotFolder.png) no-repeat center;}
+
+.batUploadedCls{background:url(../images/site/run.png) no-repeat center;}
+.batUploadCls{background:url(../images/site/bat.png) no-repeat center;}
+
+.zipUploadedCls{background:url(../images/site/zipUploaded.png) no-repeat center;}
+.zipUploadCls{background:url(../images/site/zipUpload.png) no-repeat center;}
+.zipUploadErrCls{background:url(../images/site/zipUploadErr.png) no-repeat center;}
+.zipUploadEmptyCls{background:url(../images/site/zipUploadEmpty.png) no-repeat center;}
+
+.aioCls{background:url(../images/site/aio.png) no-repeat center;}
+
+.checkAllCls{background:url(../images/site/checkall.png) no-repeat center;}
+.configCheckingCls{background:url(../images/site/configChecking.png) no-repeat center;}
+.viewInfoChecking{background:url(../images/site/viewInfoChecking.png) no-repeat center;}
+
+.uploadTestSiteCls{background:url(../images/site/uploadTestSite.png) no-repeat center;}
+.checkTestSiteCls{background:url(../images/site/checkTestSite.png) no-repeat center;}
+
+.x-action-col-cell img.checkingCls{background:url(../images/site/checking.gif) no-repeat center;}
+.x-action-col-cell img.checkOkCls{background:url(../images/site/checkok.png) no-repeat center;}
+.x-action-col-cell img.checkKoCls{background:url(../images/site/checkko.png) no-repeat center;}
+
+
+.shareCls{background:url(../images/site/share.png) no-repeat center;}
+.configUserCls{background:url(../images/site/configUser.png) no-repeat center;}
+.refreshUserCls{background:url(../images/site/refreshUser.png) no-repeat center;}
+.reFindCls{background:url(../images/site/reFind.png) no-repeat center;}
+
+#fileList div.x-grid-item-container{overflow-x: scroll}
+
+.refreshGridSiteCls{background:url(../images/site/refreshUser.png) no-repeat center;}
+
+.webConfigCls{background:url(../images/site/webConfig.png) no-repeat center;}
+.webConfigGetOkCls{background:url(../images/site/webConfigGetOk.png) no-repeat center;}
+.webConfigSaveOkCls{background:url(../images/site/webConfigSaveOk.png) no-repeat center;}

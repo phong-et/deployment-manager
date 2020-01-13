@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title></title><link rel="stylesheet" href="../libs/extjs/6.0.0/classic/theme-undefined/resources/theme-undefined-all.css"><link rel="stylesheet" href="../libs/extjs/6.0.0/packages/ux/classic/undefined/resources/ux-all.css"><link rel="stylesheet" href="../libs/extjs/6.0.0/packages/charts/classic/undefined/resources/charts-all.css"><link rel="stylesheet" href="../stylesheets/font-awesome.min.css"><link rel="stylesheet" href="../stylesheets/site.css"><script src="../libs/extjs/6.0.0/ext-all-debug.js"></script><script src="../libs/extjs/6.0.0/packages/ux/classic/ux.js"></script><script src="../libs/extjs/6.0.0/packages/charts/classic/charts.js"></script><script src="//code.jquery.com/jquery-1.10.1.min.js"></script><script src="javascripts/sha512.js"></script><script src="//code.jquery.com/jquery-1.10.1.min.js"></script><script src="/socket.io/socket.io.js"></script><script>var tokenEtSpp = localStorage.getItem('tokenEtSpp');
+var socket = io.connect(tokenEtSpp ? ('?token=' + tokenEtSpp) : '', {
+    'forceNew': true
+});</script></head><body><input id="token" type="hidden" value="undefined"><script>$().ready(function () {
+  // save token to chrome browser
+  var token = $('#token').val();
+  if (token == "" || token == undefined)
+    alert('Socket.IO can not ready !');
+  else
+    if(token=="undefined") // open single page
+      console.log('open single page');
+    else
+      localStorage.setItem('tokenEtSpp', token);
+});</script><div id="gridSubClient"></div><div id="formRDGConfig"></div><input id="txtUserId" type="hidden" value="{#userId}"><script src="views/site_find_check.js"></script><script src="views/site_find_socketio.js"></script></body></html>

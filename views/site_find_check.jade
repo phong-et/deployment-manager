@@ -1,0 +1,21 @@
+//
+   Created by Phillipet on 11/20/2015.
+extends layout
+
+block js
+    script(src='//code.jquery.com/jquery-1.10.1.min.js')
+    script(src='/socket.io/socket.io.js')
+    script.
+        var tokenEtSpp = localStorage.getItem('tokenEtSpp');
+        var socket = io.connect(tokenEtSpp ? ('?token=' + tokenEtSpp) : '', {
+            'forceNew': true
+        });
+block css
+    link(rel='stylesheet',href='../stylesheets/site.css')
+
+block content
+    #gridSubClient
+    #formRDGConfig
+    input#txtUserId(type="hidden" value="{#userId}")
+    script(src='views/site_find_check.js')
+    script(src='views/site_find_socketio.js')

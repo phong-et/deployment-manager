@@ -1,0 +1,35 @@
+/*remove dotted border around selected cell and row*/
+
+.x-grid-item-focused .x-grid-cell-inner:before {
+    display: none;
+}
+
+.x-grid-with-row-lines .x-grid-item.x-grid-item-selected {
+    border-top-style: solid !important;
+}
+
+.x-grid-with-row-lines .x-grid-item-selected + .x-grid-item {
+    border-top-style: solid !important;
+}
+
+/*remove dotted border around selected cell and row*/
+
+.spinCls {
+    background: url(../images/spinner.gif) no-repeat !important;
+}
+
+.searchCls {
+    background: url(../images/049.png) no-repeat !important;
+}
+
+.saveCls {
+    background: url(../images/096.png) no-repeat !important;
+}
+
+.delCls {
+    background: url(../images/101.png) no-repeat !important;
+}
+
+.addCls {
+    background: url(../images/103.png) no-repeat !important;
+}

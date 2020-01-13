@@ -1,0 +1,12 @@
+//
+   Created by Phillipet on 22/5/2018.
+extends layout
+block css
+    link(rel='stylesheet',href='../stylesheets/site.css')
+block js
+block content
+    #gridTask
+    #formTask
+    input#txtUserType(type="hidden" value="#{userType}")
+    input#txtUserName(type="hidden" value="#{username}")
+    script(src='views/site_log_task.js')

@@ -1,0 +1,504 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require("../app");
+var debug = require("debug")("spp3:server");
+var http = require("http");
+var fs = require("fs");
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || "9003");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  debug("Listening on " + bind);
+}
+
+// ===================== SOCKET IO ====================================
+var socketIo = require("socket.io");
+var socketio_jwt = require("socketio-jwt");
+
+var request = require("request");
+var cheerio = require("cheerio");
+
+var user = require("../model/user");
+var logger = require("../model/log");
+// contain records search result of each client's request
+var arrRecords = [];
+var log = console.log
+var skipAuthentication = false
+// use for login to inx spp
+global.cookies = "";
+
+// fixed path absolute or relative when app access a file
+// cd <path of WebStormProject>
+// node ./bin/www
+// or
+// node <path of main file of app>
+global.appRoot = require("app-root-path");
+
+var sio = socketIo.listen(server);
+global.jwt_secret = "ido";
+sio.use(
+  socketio_jwt.authorize({
+    secret: jwt_secret,
+    handshake: true
+  })
+);
+
+sio.sockets.on("connection", function (socket) {
+  //console.log('socket id[' + socket.id + '] from ' + socket.request.connection.remoteAddress + ':' + socket.request.connection.remotePort + ' is connected');
+  //console.log('User data info : ' + JSON.stringify(socket.decoded_token));
+  // send to client a message that : "you were authenticated"
+  socket.emit("isAuthenticated", true);
+  user.updateLogin(socket.decoded_token.userId, socket.id, "online", function (
+    raw
+  ) {
+    console.log(raw);
+  });
+
+  // disconnect
+  socket.on("disconnect", function () {
+    //console.log('socket id[' + socket.id + '] is disconnected');
+    // ========================== clear data of socket.id when connection disconnect ================================
+    // delete record of result searching by client
+    if (arrRecords[socket.id]) {
+      delete arrRecords[socket.id];
+      console.log("deleted arrRecords of socket id[" + socket.id + "]");
+    }
+    // disconnect socket
+    if (socket) {
+      console.log("socket.id=%s disconnected", socket.id);
+      // update offline status to database
+      user.logout(socket.decoded_token.userId, "offline", function (raw) {
+        //console.log(raw);
+      });
+      socket.disconnect();
+    }
+  });
+  // find sites  =======================================================================================================
+  socket.on("findSites", async params => {
+    if (global.cookies == "") {
+      // or expire case
+      console.log("global.cookies is null! login now ...");
+      socket.emit(
+        "logginglogin",
+        "Login by cookies local file or INX support page <br/>"
+      )
+      // start find
+      console.log("find :" + JSON.stringify(params));
+      arrRecords[socket.id] = [];
+      find3(
+        0,
+        0,
+        params.subClientNames,
+        params.wsTypes,
+        global.cookies,
+        socket,
+        params.skipAuth,
+        function (done) {
+          if (done) {
+            console.log('done-finding", "=====> done finding <=====');
+            socket.emit("done-finding", "=====> done finding <=====");
+            //filterRecords(arrRecords[socket.id])
+            socket.emit("findSites", arrRecords[socket.id]);
+          }
+        }
+      );
+    } else {
+      socket.emit("login-again");
+    }
+    // let name = params.subClientNames[0].toLowerCase(),
+    //   typeSite = params.wsTypes[0].trim(),
+    //   skipAuthentication = true
+    // log(name)
+    // log(typeSite)
+    // var scraper = require('scraper')
+    // let siteData = await scraper.fetchWLSites(name)
+    // skipAuthentication = true;
+    // let domainData = {
+    //   domains: await scraper.fetchWLDomains(name, typeSite, siteData, skipAuthentication),
+    //   ips: await scraper.fetchWLSiteAddrs(name, typeSite, siteData, skipAuthentication)
+    // }
+    // // convert data to old record
+    // arrRecords[socket.id] = []
+    // domainData.domains.forEach(domain => {
+    //   var record = {
+    //     aio: 0,
+    //     batUpload: "",
+    //     checked: 0,
+    //     clientName: "LIGA",
+    //     folderPath: "",
+    //     ipAddrL: domainData.ips[0].Addr,
+    //     ipAddrP: domainData.ips[0].Addr,
+    //     modifiedDateOfBKFile: "",
+    //     remotePort: domainData.ips[0].Addr,
+    //     siteUrl: domain.Domain,
+    //     subClientName: "LIGA365",
+    //     webConfig: 0,
+    //     wsType: typeSite,
+    //     zipUpload: "",
+    //   }
+    //   arrRecords[socket.id].push(record)
+    // })
+    // socket.emit("done-finding", "=====> done finding <=====");
+    // socket.emit("findSites", arrRecords[socket.id]);
+  });
+
+  // refind
+  socket.on("reFind", function (data) {
+    // only send to client data just appended
+    console.log("reFind :" + JSON.stringify(data));
+    var startIndex = arrRecords[socket.id].length;
+    find3(
+      0,
+      0,
+      data.subClientNames,
+      data.wsTypes,
+      global.cookies,
+      socket,
+      function (done) {
+        if (done) {
+          socket.emit("done-finding", "=====> done finding <=====");
+          var moreRecord = [];
+          for (var i = startIndex; i < arrRecords[socket.id].length; i++) {
+            moreRecord.push(arrRecords[socket.id][i]);
+          }
+          socket.emit("reFind", moreRecord);
+        }
+      }
+    );
+  });
+
+  // get list sub client  ==============================================================================================
+  socket.on("getSubClientsByClient", function (clientName) {
+    var sclient = require("../model/subclient");
+    sclient.getSubClientsByClient(clientName, function (subClients) {
+      socket.emit("getSubClientsByClient", subClients);
+    });
+  });
+
+  // create rdg file xml  ==============================================================================================
+  socket.on("createRdgFile", function (data) {
+    console.log("createRdgFile...");
+    console.log(data);
+    require("./../utils/util").createXMLGroups(data, function (strXml) {
+      var fileName = data.fileName + "_" + socket.id.substr(0, 4) + ".rdg";
+      fs.writeFile(global.appRoot + "/public/" + fileName, strXml, function (
+        err
+      ) {
+        if (err) return console.log(err);
+        console.log("write file %s > success", fileName);
+        socket.emit("createRdgFile", fileName);
+
+        // delete file after download
+        // deleteFileTemp(fileName);
+      });
+    });
+    //}
+  });
+  socket.on("exportText", function () {
+    console.log("exportText...");
+    var data = arrRecords[socket.id];
+    console.log(data);
+    require("./../utils/util").exportText(data, function (strText) {
+      var fileName = socket.id + ".txt";
+      fs.writeFile(global.appRoot + "/public/" + fileName, strText, function (
+        err
+      ) {
+        if (err) return console.log(err);
+        console.log("write file %s > success", fileName);
+        socket.emit("exportText", fileName);
+
+        // delete file after download
+        // deleteFileTemp(fileName);
+      });
+    });
+  });
+  socket.on("exportJson", function (d) {
+    console.log("exportJson...");
+    exportJsonFile(socket, d.subClientNames, d.wsTypes, "manual");
+  });
+  socket.on("emptyFile", function (fileName) {
+    fs.stat(global.appRoot + "/public/files/" + fileName, function (err) {
+      if (err == null) {
+        console.log("deleted file " + fileName);
+        fs.unlink(global.appRoot + "/public/files/" + fileName);
+        socket.emit("emptyFile");
+      } else if (err.code == "ENOENT") {
+        //do some thing
+      } else {
+        console.log("Some other error: ", err.code);
+      }
+    });
+  });
+  // ====================================================== USER MANAGEMENT ============================================
+  socket.on("getUsers", function () {
+    console.log("load users...");
+    user.getUsers(function (users) {
+      socket.emit("getUsers", users);
+    });
+  });
+  socket.on("shareFR", function (socketId) {
+    console.log("shareFR width socketId=%s", socketId);
+    socket.emit("shareFR", arrRecords[socketId]);
+    //console.log(arrRecords[socketId]);
+  });
+  socket.on("refreshFR", function () {
+    console.log("refreshFR width socketId=%s", socket.id);
+    socket.emit("refreshFR", arrRecords[socket.id]);
+    //console.log(arrRecords[socketId]);
+  });
+
+  // feature temp ====================
+  socket.on("gen-delete-bt", function (data) {
+    console.log("gen-delete-bt width socketId=%s", socket.id);
+    var fileName =
+      data.ipAddrL +
+      "_" +
+      data.subClientName +
+      "_" +
+      data.wsType +
+      "_" +
+      data.siteUrl +
+      ".bat";
+    fs.writeFile(global.appRoot + "/public/" + fileName, data.script, function (
+      err
+    ) {
+      if (err) return console.log(err);
+      console.log("write file %s > success", fileName);
+    });
+  });
+  socket.on("addSite", function (jsonSite) {
+    console.log("adding site...");
+    console.log(jsonSite);
+  });
+  // ===============================
+
+  // ======================= change password =================================
+  socket.on("change-password", function (data) {
+    console.log("change-password socketId=%s", socket.decoded_token.username);
+    console.log(data);
+    /*
+     data = {
+        newPwd: 'd404559f602eab6fd602ac7680dacbfaadd13630335e',
+        oldPwd: '3c9909afec25354d551dae21590bb26e38d53f2173b8d3'
+     }
+     */
+    user.login(socket.decoded_token.username, data.oldPwd, function (rs) {
+      if (rs.success == true) {
+        // login ET Support Page success
+        console.log(data);
+        user.updateUser(
+          { _id: socket.decoded_token.userId },
+          { password: data.newPwd },
+          function (msg) {
+            console.log(msg);
+            socket.emit("change-password", "success");
+          }
+        );
+      } else {
+        socket.emit("change-password", "old password wrong");
+      }
+    });
+  });
+});
+// ======================================================== FUNCTION UNIT ==================================================
+// delete file name temp
+var deleteFileTemp = function (fileName) {
+  // delete file after download
+  setTimeout(function () {
+    fs.stat(global.appRoot + "/public/" + fileName, function (err) {
+      if (err == null) {
+        console.log("deleted file " + fileName);
+        fs.unlink(global.appRoot + "/public/" + fileName);
+      } else if (err.code == "ENOENT") {
+      } else {
+        console.log("Some other error: ", err.code);
+      }
+    });
+  }, 10000);
+};
+// export json file function
+// use export muanal or auto( when user find 5 subclients+)
+var exportJsonFile = function (socket, clientNames, wsTypes, type) {
+  var exportedJson = filterJson(arrRecords[socket.id]);
+  var strJson = JSON.stringify(exportedJson);
+  var fileName =
+    socket.decoded_token.username +
+    "_" +
+    clientNames.toString().replace(/,/g, "_") +
+    "_" +
+    wsTypes.toString().replace(/,/g, "_") +
+    ".json";
+  if (fileName.length >= 255) fileName = fileName.substr(0, 245) + "....json";
+  console.log(fileName.length);
+  fs.writeFile(global.appRoot + "/public/backup/" + fileName, strJson, function (
+    err
+  ) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log("write file %s > success", fileName);
+    if (type != "auto") socket.emit("exportJson", fileName);
+    // delete file after download
+    //deleteFileTemp(fileName);
+  });
+};
+/**
+ *
+ * @param json json from exportJsonFile function
+ */
+var filterJson = function (json) {
+  var exportedJson = [];
+  json.forEach(e => {
+    var obj = {};
+    obj.siteUrl = "http://" + e.siteUrl;
+    obj.clientName = e.clientName;
+    obj.subClientName = e.LIGA365;
+    obj.wsType = e.wsType;
+    obj.remotePort = e.remotePort;
+    exportedJson.push(obj);
+  });
+  return exportedJson;
+};
+// find function site on support page
+async function find3(i, j, clientNames, wsTypes, options, socket, skipAuth, callback) {
+  if (i < clientNames.length && j < wsTypes.length) {
+    // get param subClientName and wsType
+    //options.form.txtWebSite = clientNames[i].trim().toLowerCase();
+    //options.form.cboWSType = wsTypes[j];
+    let name = clientNames[i].toLowerCase().trim(),
+      typeSite = wsTypes[j].trim(),
+      skipAuthentication = skipAuth
+    log(name)
+    log(typeSite)
+    log(skipAuth)
+    var scraper = require('scraper')
+    let siteData = await scraper.fetchWLSites(name, skipAuthentication)
+    skipAuthentication = true;
+    let domainData = {
+      domains: await scraper.fetchWLDomains(name, typeSite, siteData, skipAuthentication),
+      ips: await scraper.fetchWLSiteAddrs(name, typeSite, siteData, skipAuthentication)
+    }
+    // convert data to old record
+    domainData.domains.forEach(domain => {
+      var record = {
+        aio: 0,
+        batUpload: "",
+        checked: 0,
+        clientName: "LIGA",
+        folderPath: "",
+        ipAddrL: domainData.ips[0].Addr,
+        ipAddrP: domainData.ips.map(ip => ip.Addr),
+        modifiedDateOfBKFile: "",
+        remotePort: domainData.ips[0].Addr,
+        siteUrl: domain.Domain,
+        subClientName: name.toUpperCase(),
+        webConfig: 0,
+        wsType: typeSite,
+        zipUpload: "",
+      }
+      arrRecords[socket.id].push(record)
+    })
+    j++;
+    setTimeout(function () {
+      find3(i, j, clientNames, wsTypes, options, socket, skipAuth, callback);
+    }, 100);
+  }
+  // when done clientNames
+  else {
+    if (i < clientNames.length) {
+      j = 0; // reset
+      i++;
+      setTimeout(function () {
+        find3(i, j, clientNames, wsTypes, options, socket,skipAuth, callback);
+      }, 100);
+    } else {
+      // done all
+      console.log("Done finding");
+      callback(true);
+    }
+  }
+};
+
+function filterRecords(records) {
+  records.forEach((record, index) => {
+    if (record.ipAddrL === "127.0.0.1" || record.ipAddrL === '') {
+      records.splice(index)
+    }
+  });
+}
