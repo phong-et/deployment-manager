@@ -25,3 +25,5 @@ utils/gsheets/client_secret.json
 utils/gsheets/credentials.json
 
 public/images/full_logo_white.png
+
+bin/www_old

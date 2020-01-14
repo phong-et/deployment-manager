@@ -206,56 +206,13 @@ Ext.onReady(function() {
                 renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
                     return '<a class="siteUrl" href="http://' + value + '/Main.aspx" target="_blank" title="go to site">Main</a>';
                 }
-                
             },
             { text: 'Maintenance', dataIndex: 'siteUrl', width:100, hidden:true,
                 renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
                     return '<a class="siteUrl" href="http://' + value + '/maintenancepg.aspx" target="_blank" title="go to site">Maintenance</a>';
                 }
             },
-            { text: 'Client', dataIndex: 'clientName', width: 100, hidden: true},
-            { text: 'Sub Client', dataIndex: 'subClientName', width:150},
-            { text: 'Type', dataIndex: 'wsType', width: 60},
-            { type:'combo', text: 'IP Local', dataIndex: 'ipAddrL', width:130,
-                // renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                //     return value;
-                // },
-                // editor:{
-                //     type:'textfield',
-                //     editable:false
-                // }
-            //     editor: {
-            //         xtype: 'combobox',
-            //         typeAhead: true, triggerAction: 'all', queryMode: 'local',
-            //         store: new Ext.data.ArrayStore({
-            //              data: [1234,123,444],
-            //              fields: [
-            //                   {name: 'value', type: 'int'},
-            //              ]
-            //         }),
-            //         listeners: {
-            //              select: 'onChangeTeam'
-            //         }
-            //    }
-                // editor: new Ext.form.field.ComboBox({
-                //     store: App.store.Prices,
-                //     displayField: 'period_unit_name',
-                //     valueField: 'id',
-                //     listeners: {
-                //       beforequery: function(queryEvent){
-                //           queryEvent.combo.store.filter('product_id', /* the id of the product goes here */);
-                //       }    
-                //   }
-                // })
-            },
             {
-                text:'Update',
-                dataIndex: 'siteUrl',
-                hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    return '<a class="aUpdate" href="#" title="add or update" onclick="return addOrUpdate(' + record + ');"><img src="images/site/update.png"/></a>';
-                }
-            },{
                 text: 'Remote', dataIndex: 'ipAddrL', width:100, hidden:true,
                 renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
                     return '<a class="aUpdate" href="#" title="add or update" onclick="return openRemoteDesktop(' + record + ');"><img src="images/site/update.png"/></a>';
@@ -272,7 +229,47 @@ Ext.onReady(function() {
                     + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOddsFav2.aspx" target="_blank" title="go to site">JSOddsFav2</a>';
                     return jsOdds;
                 }
-            },{ text: 'Folder web', dataIndex: 'folderPath', width:300,
+            },
+            { text: 'Client', dataIndex: 'clientName', width: 100, hidden: true},
+            { text: 'Sub Client', dataIndex: 'subClientName', width:150},
+            { text: 'Type', dataIndex: 'wsType', width: 60},
+            { type:'combo', text: 'IP Local', dataIndex: 'ipAddrL', width:130,
+                // renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
+                //     return value;
+                // },
+                // editor:{
+                //     type:'textfield',
+                //     editable:false
+                // }
+                //     editor: {
+                //         xtype: 'combobox',
+                //         typeAhead: true, triggerAction: 'all', queryMode: 'local',
+                //         store: new Ext.data.ArrayStore({
+                //              data: [1234,123,444],
+                //              fields: [
+                //                   {name: 'value', type: 'int'},
+                //              ]
+                //         }),
+                //         listeners: {
+                //              select: 'onChangeTeam'
+                //         }
+                //    }
+                // editor: new Ext.form.field.ComboBox({
+                //     store: App.store.Prices,
+                //     displayField: 'period_unit_name',
+                //     valueField: 'id',
+                //     listeners: {
+                //       beforequery: function(queryEvent){
+                //           queryEvent.combo.store.filter('product_id', /* the id of the product goes here */);
+                //       }    
+                //   }
+                // })
+            },
+            { 
+                text: 'ID', dataIndex: 'serverId', width:50, tooltip:"Main Server Id"
+            },
+            { 
+                text: 'Folder web', dataIndex: 'folderPath', width:300,
                 editor:{
                     type:'textfield'
                 }
@@ -369,6 +366,7 @@ Ext.onReady(function() {
                         // done uploading zip file
                         else if(doAction == 2 || doAction == "2"){
                             var siteName = Ext.getCmp('txtUrlCheckingDefault').getValue() + '/Public/GetDateModifiedOfFiles.aspx';
+                            var serverId = grid.getStore().getAt(rowIndex).get('serverId')
                             var isUseUrlCheckingDefault = Ext.getCmp('useUrlCheckingDefault').getValue();
                             if (isUseUrlCheckingDefault == false) {
                                 siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl') + '/Public/GetDateModifiedOfFiles.aspx';
@@ -377,7 +375,7 @@ Ext.onReady(function() {
                             grid.getStore().getAt(rowIndex).set('zipUpload', 1); // start checking
                             Ext.Ajax.request({
                                 url: 'checkdate/upload-zip-deploy',
-                                params: {siteName: siteName, dzFileName: dzFileName, action:'e'},
+                                params: {siteName: siteName, serverId:serverId, dzFileName: dzFileName, action:'e'},
                                 success: function (response) {
                                     // parse jsonString from server
                                     var jsonR = JSON.parse(response.responseText);
@@ -399,6 +397,7 @@ Ext.onReady(function() {
                         else if(doAction == '') {
                             // check url
                             var siteName = Ext.getCmp('txtUrlCheckingDefault').getValue() + '/Public/GetDateModifiedOfFiles.aspx';
+                            var serverId = grid.getStore().getAt(rowIndex).get('serverId')
                             var isUseUrlCheckingDefault = Ext.getCmp('useUrlCheckingDefault').getValue();
                             if (isUseUrlCheckingDefault == false) {
                                 siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl') + '/Public/GetDateModifiedOfFiles.aspx';
@@ -407,7 +406,7 @@ Ext.onReady(function() {
                             grid.getStore().getAt(rowIndex).set('zipUpload', 1); // start checking
                             Ext.Ajax.request({
                                 url: 'checkdate/upload-zip-deploy',
-                                params: {siteName: siteName, dzFileName: dzFileName, action:'u'},
+                                params: {siteName: siteName, serverId:serverId, dzFileName: dzFileName, action:'u'},
                                 success: function (response) {
                                     // parse jsonString from server
                                     var jsonR = JSON.parse(response.responseText);

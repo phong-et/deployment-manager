@@ -123,23 +123,8 @@ var getModifiedDateOfFileInSite = function(siteName,filesParam,nameBkFile,callba
         request.post({ url: siteName + '/Public/GetDateModifiedOfFiles.aspx', form: form, headers: headers }, function (e, response, body) {
             try{
                 if (!e && response.statusCode == 200) {
-                    console.log('done GetDateModifiedOfFiles: %s',response.statusCode);
+                    console.log('done GetDateModifiedOfFiles: %s', response.statusCode)
                     callback(body);
-                }
-                else if(response.statusCode == 302) { // http://prntscr.com/hyt1ul
-                    // implements for WAP projects
-                    console.log('response.statusCode = 302 ==> implements for WAP projects');
-                    console.log(response.headers);
-                    request.post({ url: response.headers.location, form: form, headers: headers }, function (e, response, body) {
-                        if (!e && response.statusCode == 200) {
-                            console.log('done GetDateModifiedOfFiles WAP projects : %s',response.statusCode);
-                            console.log(body)
-                            callback(body);
-                        }else{
-                            // Error Unknown
-                            console.log('Error GetDateModifiedOfFiles WAP projects ');
-                        }
-                    });
                 }
             }
             catch(e){
@@ -234,7 +219,7 @@ router.post('/generate-bat-file', isAuthenticated, function(req, res, next) {
     });
 });
 
-router.post('/upload-zip-deploy', isAuthenticated, function(req, res, next) {
+router.post('/upload-zip-deploy', isAuthenticated, async function(req, res, next) {
     var file = '';
     if(req.body.action == 'u')
         file=fs.createReadStream(global.appRoot + '/public/files/' + req.body.dzFileName);
@@ -264,20 +249,13 @@ router.post('/upload-zip-deploy', isAuthenticated, function(req, res, next) {
         //}
     };
     //console.log(formData);
-    request.post({url:req.body.siteName + '?cmd=GetModifiedDate2&' + specificServerExternalParam, formData: formData}, function optionalCallback(e, response, body) {
-        // if (e) {
-        //     res.send({success:false.success, msg: 'upload failed:' + e});
-        //     return console.error('upload failed:', e);
-        // }
-        // console.log('Upload successful!  Server responded with:', body);
-        // try {
-        //     var jsonR = JSON.parse(body.replace(/\\/g,'\/'));
-        //     res.send({success:jsonR.success, msg: jsonR.msg ||  formData.action + ' successfully'}); // error save file or success from asp.net
-        // }
-        // catch(e) {
-        //     res.send({success:false, msg: e});
-        // }
-
+    specificServerExternalParam = await require('scraper').fetchBackendId(parseInt(req.body.serverId.trim()), true)
+    var options = {
+        url:req.body.siteName + '?cmd=GetModifiedDate2&bpx-backend-id=' + specificServerExternalParam,
+        formData: formData
+    }
+    console.log(options)
+    request.post(options, function optionalCallback(e, response, body) {
         try{
             if (!e && response.statusCode == 200) {
                 console.log('done upload-zip-deploy: %s',response.statusCode);
@@ -289,28 +267,6 @@ router.post('/upload-zip-deploy', isAuthenticated, function(req, res, next) {
                     res.send({success:false, msg: e});
                 }
             }
-            // else if(response.statusCode == 302) { // http://prntscr.com/hyt1ul
-            //     // implements for WAP projects
-            //     console.log('response.statusCode = 302 ==> implements for WAP projects');
-            //     console.log(response.headers);
-            //     request.post({ url: response.headers.location, formData: formData}, function (e, response, body) {
-            //         console.log(response.headers)
-            //         if (!e && response.statusCode == 200) {
-            //             console.log('done upload-zip-deploy WAP projects : %s',response.statusCode);
-            //             try {
-            //                 var jsonR = JSON.parse(body.replace(/\\/g,'\/'));
-            //                 res.send({success:jsonR.success, msg: jsonR.msg ||  formData.action + ' successfully'});
-            //             }
-            //             catch(e) {
-            //                 res.send({success:false, msg: e});
-            //             }
-            //         }else{
-            //             // Error Unknown                        
-            //             console.log('Error upload-zip-deploy WAP projects ');
-            //             res.send({success:false.success, msg: 'upload failed:' + e});
-            //         }
-            //     });
-            // }
         }
         catch(e){
             console.log(e)
@@ -370,3 +326,6 @@ router.post('/add-web-config', isAuthenticated, function(req, res, next) {
     });
 });
 module.exports = router;
+// (async function(){
+//     console.log(await require('scraper').fetchBackendId(169))
+// }())

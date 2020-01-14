@@ -229,31 +229,6 @@ sio.sockets.on("connection", function (socket) {
     // socket.emit("findSites", arrRecords[socket.id]);
   });
 
-  // refind
-  socket.on("reFind", function (data) {
-    // only send to client data just appended
-    console.log("reFind :" + JSON.stringify(data));
-    var startIndex = arrRecords[socket.id].length;
-    find3(
-      0,
-      0,
-      data.subClientNames,
-      data.wsTypes,
-      global.cookies,
-      socket,
-      function (done) {
-        if (done) {
-          socket.emit("done-finding", "=====> done finding <=====");
-          var moreRecord = [];
-          for (var i = startIndex; i < arrRecords[socket.id].length; i++) {
-            moreRecord.push(arrRecords[socket.id][i]);
-          }
-          socket.emit("reFind", moreRecord);
-        }
-      }
-    );
-  });
-
   // get list sub client  ==============================================================================================
   socket.on("getSubClientsByClient", function (clientName) {
     var sclient = require("../model/subclient");
@@ -266,7 +241,7 @@ sio.sockets.on("connection", function (socket) {
   socket.on("createRdgFile", function (data) {
     console.log("createRdgFile...");
     console.log(data);
-    require("./../utils/util").createXMLGroups(data, function (strXml) {
+    require("../utils/util").createXMLGroups(data, function (strXml) {
       var fileName = data.fileName + "_" + socket.id.substr(0, 4) + ".rdg";
       fs.writeFile(global.appRoot + "/public/" + fileName, strXml, function (
         err
@@ -285,7 +260,7 @@ sio.sockets.on("connection", function (socket) {
     console.log("exportText...");
     var data = arrRecords[socket.id];
     console.log(data);
-    require("./../utils/util").exportText(data, function (strText) {
+    require("../utils/util").exportText(data, function (strText) {
       var fileName = socket.id + ".txt";
       fs.writeFile(global.appRoot + "/public/" + fileName, strText, function (
         err
@@ -353,11 +328,6 @@ sio.sockets.on("connection", function (socket) {
       console.log("write file %s > success", fileName);
     });
   });
-  socket.on("addSite", function (jsonSite) {
-    console.log("adding site...");
-    console.log(jsonSite);
-  });
-  // ===============================
 
   // ======================= change password =================================
   socket.on("change-password", function (data) {
@@ -387,22 +357,8 @@ sio.sockets.on("connection", function (socket) {
     });
   });
 });
+
 // ======================================================== FUNCTION UNIT ==================================================
-// delete file name temp
-var deleteFileTemp = function (fileName) {
-  // delete file after download
-  setTimeout(function () {
-    fs.stat(global.appRoot + "/public/" + fileName, function (err) {
-      if (err == null) {
-        console.log("deleted file " + fileName);
-        fs.unlink(global.appRoot + "/public/" + fileName);
-      } else if (err.code == "ENOENT") {
-      } else {
-        console.log("Some other error: ", err.code);
-      }
-    });
-  }, 10000);
-};
 // export json file function
 // use export muanal or auto( when user find 5 subclients+)
 var exportJsonFile = function (socket, clientNames, wsTypes, type) {
@@ -459,11 +415,12 @@ async function find3(i, j, clientNames, wsTypes, options, socket, skipAuth, call
     //log(name)
     //log(typeSite)
     //log(skipAuth)
-    let siteData = await scraper.fetchWLSites(name, skipAuthentication)
-    skipAuthentication = true;
+    let siteData = await scraper.fetchSites(name, skipAuthentication)
+    //skipAuthentication = true
+    let siteId = scraper.getSiteId(name, siteData, typeSite)
     let domainData = {
-      domains: await scraper.fetchWLDomains(name, typeSite, siteData, skipAuthentication),
-      ips: await scraper.fetchWLSiteAddrs(name, typeSite, siteData, skipAuthentication)
+      domains: await scraper.fetchDomainsBySiteId(siteId, skipAuthentication),
+      ips: await scraper.fetchServerBySiteId(siteId, skipAuthentication)
     }
     // convert data to old record
     domainData.domains.forEach(domain => {
@@ -474,6 +431,7 @@ async function find3(i, j, clientNames, wsTypes, options, socket, skipAuth, call
         clientName: "LIGA",
         folderPath: "",
         ipAddrL: domainData.ips[0].Addr.replace("192.","10."),
+        serverId: domainData.ips[0].ID,
         ipAddrP: domainData.ips.map(ip => ip.Addr),
         modifiedDateOfBKFile: "",
         remotePort: domainData.ips[0].Addr.replace("192.","10."),
