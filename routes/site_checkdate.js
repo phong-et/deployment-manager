@@ -249,12 +249,13 @@ router.post('/upload-zip-deploy', isAuthenticated, async function(req, res, next
         //}
     };
     //console.log(formData);
-    specificServerExternalParam = await require('scraper').fetchBackendId(parseInt(req.body.serverId.trim()), true)
+    console.log(req.body.skipAuth)
+    specificServerExternalParam = await require('scraper').fetchBackendId(parseInt(req.body.serverId.trim()), JSON.parse(req.body.skipAuth))
     var options = {
         url:req.body.siteName + '?cmd=GetModifiedDate2&bpx-backend-id=' + specificServerExternalParam,
         formData: formData
     }
-    console.log(options)
+    console.log(options.url)
     request.post(options, function optionalCallback(e, response, body) {
         try{
             if (!e && response.statusCode == 200) {

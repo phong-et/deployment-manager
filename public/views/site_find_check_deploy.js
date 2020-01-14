@@ -375,7 +375,7 @@ Ext.onReady(function() {
                             grid.getStore().getAt(rowIndex).set('zipUpload', 1); // start checking
                             Ext.Ajax.request({
                                 url: 'checkdate/upload-zip-deploy',
-                                params: {siteName: siteName, serverId:serverId, dzFileName: dzFileName, action:'e'},
+                                params: {siteName: siteName, serverId:serverId, skipAuth:!Ext.getCmp('cbbAuth').getValue(), dzFileName: dzFileName, action:'e'},
                                 success: function (response) {
                                     // parse jsonString from server
                                     var jsonR = JSON.parse(response.responseText);
@@ -406,7 +406,7 @@ Ext.onReady(function() {
                             grid.getStore().getAt(rowIndex).set('zipUpload', 1); // start checking
                             Ext.Ajax.request({
                                 url: 'checkdate/upload-zip-deploy',
-                                params: {siteName: siteName, serverId:serverId, dzFileName: dzFileName, action:'u'},
+                                params: {siteName: siteName, serverId:serverId, skipAuth:!Ext.getCmp('cbbAuth').getValue(), dzFileName: dzFileName, action:'u'},
                                 success: function (response) {
                                     // parse jsonString from server
                                     var jsonR = JSON.parse(response.responseText);
