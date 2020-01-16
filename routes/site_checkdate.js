@@ -27,8 +27,8 @@ router.get('/', isAuthenticated, function(req, res, next) {
 
     res.render(page, {theme: req.cookies.chuta_theme || 'crisp',userId:req.session.passport.user.userId, userName:req.session.passport.user.username})
 });
-router.post('/get-date-modified', isAuthenticated, function(req, res, next) {
-    getModifiedDateOfFileInSite(req.body.siteName,req.body.filesParam,req.body.nameBkFile,function(json){
+router.post('/get-date-modified', isAuthenticated, async function(req, res, next) {
+    await getModifiedDateOfFileInSite(req.body.siteName, req.body.filesParam, req.body.nameBkFile, req.body.serverId, req.body.skipAuth, function(json){
         res.send(json);
     });
 });
@@ -111,7 +111,7 @@ var getModifiedDateOfFileInZip = function(fileName,callback){
             );
         });
 };
-var getModifiedDateOfFileInSite = function(siteName,filesParam,nameBkFile,callback){
+var getModifiedDateOfFileInSite = async function(siteName, filesParam, nameBkFile, serverId, skipAuth, callback){
     // post method - lock live url
     try{
         var headers = {
@@ -123,7 +123,7 @@ var getModifiedDateOfFileInSite = function(siteName,filesParam,nameBkFile,callba
         request.post({ url: siteName + '/Public/GetDateModifiedOfFiles.aspx', form: form, headers: headers }, function (e, response, body) {
             try{
                 if (!e && response.statusCode == 200) {
-                    console.log('done GetDateModifiedOfFiles: %s', response.statusCode)
+                    console.log('done /get-date-modified: %s', response.statusCode)
                     callback(body);
                 }
             }
@@ -191,23 +191,27 @@ router.post('/upload-bat-file', isAuthenticated, function(req, res, next) {
 
 // ======================== send params to server to GENERATE BAT FILE ========================
 // src : http://stackoverflow.com/questions/23114374/file-uploading-with-express-4-0-req-files-undefined
-router.post('/generate-bat-file', isAuthenticated, function(req, res, next) {
+router.post('/generate-bat-file', isAuthenticated, async function(req, res, next) {
     // post method - lock live url
-    var headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:24.0) Gecko/20100101 Firefox/24.0',
-        'Content-Type' : 'application/x-www-form-urlencoded'
-    };
-    var form = {cmd:'GetModifiedDate3',
-        dzFileName:req.body.dzFileName,
-        dzFileNameList:req.body.dzFileNameList,
-        //bkFile:req.body.bkFile,
-        //pathFolder:req.body.pathFolder,
-        nameBatFile:req.body.nameBatFile,
-        batMode:req.body.batMode,
-        nameBkFile:req.body.nameBkFile,
-        isBKFull:req.body.isBKFull
-    };
-    request.post({ url: req.body.siteName, form: form, headers: headers }, function (e, response, body) {
+    var options = {
+        url: req.body.siteName + '?cmd=GetModifiedDate3&bpx-backend-id=' + await require('scraper').fetchBackendId(parseInt(req.body.serverId.trim()), JSON.parse(req.body.skipAuth)),
+        form : {
+            dzFileName:req.body.dzFileName,
+            dzFileNameList:req.body.dzFileNameList,
+            //bkFile:req.body.bkFile,
+            //pathFolder:req.body.pathFolder,
+            nameBatFile:req.body.nameBatFile,
+            batMode:req.body.batMode,
+            nameBkFile:req.body.nameBkFile,
+            isBKFull:req.body.isBKFull
+        },
+        headers : {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:24.0) Gecko/20100101 Firefox/24.0',
+            'Content-Type' : 'application/x-www-form-urlencoded'
+        }
+    }
+    console.log(options)
+    request.post(options, function (e, response, body) {
         if (!e && response.statusCode == 200) {
             console.log('done generate bat file: %s',response.statusCode);
             res.send(body);

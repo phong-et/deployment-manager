@@ -212,12 +212,8 @@ Ext.onReady(function() {
                     return '<a class="siteUrl" href="http://' + value + '/maintenancepg.aspx" target="_blank" title="go to site">Maintenance</a>';
                 }
             },
-            {
-                text: 'Remote', dataIndex: 'ipAddrL', width:100, hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    return '<a class="aUpdate" href="#" title="add or update" onclick="return openRemoteDesktop(' + record + ');"><img src="images/site/update.png"/></a>';
-                }
-            },{ text: 'LiveTV', dataIndex: 'siteUrl', width:100, hidden:true,
+            {text: 'Remote', dataIndex: 'ipAddrL', width:100, hidden:true},
+            { text: 'LiveTV', dataIndex: 'siteUrl', width:100, hidden:true,
                 renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
                     return '<a class="siteUrl" href="http://' + value + '/_view/LiveTV.aspx" target="_blank" title="go to site">LiveTV</a>';
                 }
@@ -265,7 +261,7 @@ Ext.onReady(function() {
                 //   }
                 // })
             },
-            { 
+            {
                 text: 'ID', dataIndex: 'serverId', width:50, tooltip:"Main Server Id"
             },
             { 
@@ -305,9 +301,10 @@ Ext.onReady(function() {
                             siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
                             // filesParam = '/Public/GetDateModifiedOfFiles.aspx?files=';
                         }
+                        var serverId = grid.getStore().getAt(rowIndex).get('serverId')
                         Ext.Ajax.request({
                             url: 'checkdate/get-date-modified',
-                            params:{filesParam:filesParam,siteName:siteName},
+                            params:{filesParam: filesParam, siteName: siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
                             success: function(response) {
                                 // parse jsonString from server
                                 var jsonObjsFromSite = JSON.parse(response.responseText.replace(/\\/g,'\\\\'));
@@ -486,7 +483,9 @@ Ext.onReady(function() {
                             siteName:siteName,
                             batMode:Ext.getCmp('rbBatMode').getValue().rb,
                             nameBkFile:nameBkFile, // only use for BO team
-                            isBKFull:Ext.getCmp('cbBackupFull').getValue()
+                            isBKFull:Ext.getCmp('cbBackupFull').getValue(),
+                            serverId:grid.getStore().getAt(rowIndex).get('serverId'), 
+                            skipAuth:!Ext.getCmp('cbbAuth').getValue(),
                         };
                         // create request to server
                         grid.getStore().getAt(rowIndex).set('batUpload',' '); // start uploading
@@ -504,9 +503,11 @@ Ext.onReady(function() {
                                         // start check auto
                                         grid.getStore().getAt(rowIndex).set('checked',1); // start checking
                                         setTimeout(function(){
+                                            var serverId = grid.getStore().getAt(rowIndex).get('serverId')
+                                            
                                             Ext.Ajax.request({
                                                 url: 'checkdate/get-date-modified',
-                                                params:{filesParam:filesParam,siteName:siteName},
+                                                params:{filesParam:filesParam, siteName:siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
                                                 success: function(response) {
                                                     // parse jsonString from server
                                                     var jsonObjsFromSite = JSON.parse(response.responseText);
@@ -628,10 +629,10 @@ Ext.onReady(function() {
                             siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
                             //filesParam = Ext.getCmp('filesParam').getValue();
                         }
-
+                        var serverId = grid.getStore().getAt(rowIndex).get('serverId')
                         Ext.Ajax.request({
                             url: 'checkdate/get-date-modified',
-                            params:{filesParam:filesParam,siteName:siteName},
+                            params:{filesParam: filesParam, siteName: siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
                             success: function(response) {
                                 // parse jsonString from server
                                 var rsText = response.responseText.replace(/\\/g,'\\\\');
@@ -1156,7 +1157,7 @@ Ext.onReady(function() {
                         var jsonCfg = JSON.parse(JSON.parse(res.responseText).CfgFind);
                         Ext.getCmp('cbbModeQuery').setValue(jsonCfg.findStyle);
                         Ext.getCmp('cbbClient').setValue(jsonCfg.clientName);
-                        //Ext.getCmp('cbbGrouping').setValue(jsonCfg.grouping);
+                        Ext.getCmp('cbbGrouping').setValue(jsonCfg.grouping);
                         Ext.getCmp('txtWsType').setValue(jsonCfg.wsType);
 
                         //Ext.getCmp('gridSite').getView().getFeature('onExpand').setConfig({startCollapsed:jsonCfg.isGroupingExpand});
@@ -1174,7 +1175,7 @@ Ext.onReady(function() {
                             //socket.emit('getSubClientsByClient','LIGA');
                         }
                         Ext.getCmp('cbbClientCfg').setValue(jsonCfg.clientName);
-                        //Ext.getCmp('cbbGroupingCfg').setValue(jsonCfg.grouping);
+                        Ext.getCmp('cbbGroupingCfg').setValue(jsonCfg.grouping);
                         /**
                          * Customize wsType list by user
                          * Descriptor by Nick Nguyen 27/09/2016
@@ -2328,9 +2329,10 @@ function checkAllDeployingSiteOneRow(grid, rowIndex){
             // filesParam = Ext.getCmp('filesParam').getValue();
         }
         // create a request post to server
+        var serverId = grid.getStore().getAt(rowIndex).get('serverId')
         Ext.Ajax.request({
             url: 'checkdate/get-date-modified',
-            params: {filesParam: filesParam, siteName: siteName},
+            params: {filesParam: filesParam, siteName: siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
             success: function (response) {
                 // parse jsonString from server
                 // format : {"files":[{"fileName":"","modifiedDate":"12/9/2015 10:19:25 AM"}],"path":"D:\Projects\Liga New\wsligweb_v6"}
@@ -2381,10 +2383,11 @@ function getAllFolderSiteOneRow(grid, rowIndex){
         siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
         // filesParam = '/Public/GetDateModifiedOfFiles.aspx?files=';
     }
+    var serverId = grid.getStore().getAt(rowIndex).get('serverId')
     // create a request post to server
     Ext.Ajax.request({
         url: 'checkdate/get-date-modified',
-        params:{filesParam:filesParam,siteName:siteName},
+        params:{filesParam: filesParam, siteName: siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
         success: function(response) {
             // parse jsonString from server
             var jsonObjsFromSite = JSON.parse(response.responseText.replace(/\\/g,'\\\\'));
@@ -2500,8 +2503,6 @@ function getAllWebConfigStr(){
     }
 }
 
-
-
 function dzFileNameListGen(fileList,folderPath){
     // update for v8 LIGABOLAWeb_Member
     if(folderPath.indexOf("Web")==-1)
@@ -2578,10 +2579,10 @@ function checkDeploying(grid, rowIndex) {
         siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
         //filesParam = Ext.getCmp('filesParam').getValue();
     }
-
+    var serverId = grid.getStore().getAt(rowIndex).get('serverId')    
     Ext.Ajax.request({
         url: 'checkdate/get-date-modified',
-        params:{filesParam:filesParam,siteName:siteName},
+        params:{filesParam: filesParam, siteName: siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
         success: function(response) {
             // parse jsonString from server
             var jsonObjsFromSite = JSON.parse(response.responseText);

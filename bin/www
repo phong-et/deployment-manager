@@ -170,7 +170,7 @@ sio.sockets.on("connection", function (socket) {
       console.log("find :" + JSON.stringify(params));
       arrRecords[socket.id] = [];
       var startTime = new Date()
-      find3(
+      await find3(
         0,
         0,
         params.subClientNames,
@@ -432,7 +432,8 @@ async function find3(i, j, clientNames, wsTypes, options, socket, skipAuth, call
         folderPath: "",
         ipAddrL: domainData.ips[0].Addr.replace("192.","10."),
         serverId: domainData.ips[0].ID,
-        ipAddrP: domainData.ips.map(ip => ip.Addr),
+        // this field for group IP and Name
+        ipAddrP: domainData.ips[0].Addr.replace("192.","10."),//domainData.ips.map(ip => ip.Addr),
         modifiedDateOfBKFile: "",
         remotePort: domainData.ips[0].Addr.replace("192.","10."),
         siteUrl: domain.Domain,
@@ -444,8 +445,8 @@ async function find3(i, j, clientNames, wsTypes, options, socket, skipAuth, call
       arrRecords[socket.id].push(record)
     })
     j++;
-    setTimeout(function () {
-      find3(i, j, clientNames, wsTypes, options, socket, skipAuth, callback);
+    setTimeout(async function () {
+      await find3(i, j, clientNames, wsTypes, options, socket, skipAuth, callback);
     }, 100);
   }
   // when done clientNames
@@ -453,8 +454,8 @@ async function find3(i, j, clientNames, wsTypes, options, socket, skipAuth, call
     if (i < clientNames.length) {
       j = 0; // reset
       i++;
-      setTimeout(function () {
-        find3(i, j, clientNames, wsTypes, options, socket, skipAuth, callback);
+      setTimeout( async function () {
+        await find3(i, j, clientNames, wsTypes, options, socket, skipAuth, callback);
       }, 100);
     } else {
       // done all
