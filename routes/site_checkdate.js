@@ -330,7 +330,25 @@ router.post('/add-web-config', isAuthenticated, function(req, res, next) {
         }
     });
 });
+
+router.post('/remote', isAuthenticated, function(req, res, next) {
+    try {
+        var spawn = require('child_process').spawn;
+        //console.log(req)
+        console.log('remote ip :%s', req.body.serverIp)
+        spawn('C:\\Windows\\System32\\mstsc.exe', ['/v:' + req.body.serverIp])
+        res.send({success:true})
+    } catch (error) {
+        res.send({success:false})
+    }
+})
+
+
 module.exports = router;
 // (async function(){
-//     console.log(await require('scraper').fetchBackendId(169))
+//     //console.log(await require('scraper').fetchBackendId(169))
+//     var ip = '10.168.106.111'
+//     var spawn = require('child_process').spawn
+//     console.log(ip)
+//     spawn('C:\\Windows\\System32\\mstsc.exe', ['/v:' + ip])
 // }())

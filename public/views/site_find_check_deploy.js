@@ -262,7 +262,30 @@ Ext.onReady(function() {
                 // })
             },
             {
-                text: 'ID', dataIndex: 'serverId', width:50, tooltip:"Main Server Id"
+                text: 'ID', dataIndex: 'serverId', width:40, tooltip:"Main Server Id"
+            },
+            {
+                xtype: 'actioncolumn',
+                width: 30,
+                tooltip:'Open Remote Desktop Connection',
+                // sortable: false,
+                // menuDisabled: true,
+                text:'RM',
+                items: [{
+                    iconCls: 'remoteCls',
+                    handler: function (grid, rowIndex) {
+                        Ext.Ajax.request({
+                            params:{serverIp: grid.getStore().getAt(rowIndex).get('ipAddrL')},
+                            url: 'checkdate/remote',
+                            success: function(response) {
+                              console.log(response)
+                            },
+                            failure: function(response) {
+                               alert(JSON.stringify(response))
+                            }
+                        });
+                    }
+                }]
             },
             { 
                 text: 'Folder web', dataIndex: 'folderPath', width:300,

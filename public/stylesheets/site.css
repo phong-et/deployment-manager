@@ -73,3 +73,5 @@ body,html{width:100%; height:100%}
 .webConfigCls{background:url(../images/site/webConfig.png) no-repeat center;}
 .webConfigGetOkCls{background:url(../images/site/webConfigGetOk.png) no-repeat center;}
 .webConfigSaveOkCls{background:url(../images/site/webConfigSaveOk.png) no-repeat center;}
+
+.remoteCls{background:url(../images/site/remote.png) no-repeat center;}
