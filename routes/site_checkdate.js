@@ -218,7 +218,8 @@ router.post('/generate-bat-file', isAuthenticated, async function(req, res, next
         }else{
             console.log('generate bat file failed');
             console.log(body);
-            res.send({success:false, msg:req.body.siteName + ' not exists'});
+            console.log(response.statusCode)
+            res.send({success:false, msg: req.body.siteName + ' not exists'});
         }
     });
 });

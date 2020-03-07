@@ -274,9 +274,21 @@ Ext.onReady(function() {
                 items: [{
                     iconCls: 'remoteCls',
                     handler: function (grid, rowIndex) {
+                        // local project
+                        // Ext.Ajax.request({
+                        //     params:{serverIp: grid.getStore().getAt(rowIndex).get('ipAddrL')},
+                        //     url: 'checkdate/remote',
+                        //     success: function(response) {
+                        //       console.log(response)
+                        //     },
+                        //     failure: function(response) {
+                        //        alert(JSON.stringify(response))
+                        //     }
+                        // });
+                        // another project
                         Ext.Ajax.request({
-                            params:{serverIp: grid.getStore().getAt(rowIndex).get('ipAddrL')},
-                            url: 'checkdate/remote',
+                            method:'GET',
+                            url: 'http://localhost:3000/remote/' + grid.getStore().getAt(rowIndex).get('ipAddrL'),
                             success: function(response) {
                               console.log(response)
                             },
