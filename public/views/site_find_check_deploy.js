@@ -148,39 +148,39 @@ Ext.onReady(function() {
         height:Ext.getBody().getViewSize().height,
         width: Ext.getBody().getViewSize().width,
         store: storeSite,
-        selType: 'cellmodel',
-        plugins: [{
-            ptype: 'cellediting',
-            clicksToEdit:2
-            },
-            //'headerfiltering'
-        ],
+        // selType: 'cellmodel',
+        // plugins: [{
+        //     ptype: 'cellediting',
+        //     clicksToEdit:2
+        //     },
+        //     //'headerfiltering'
+        // ],
         features: [
             //feature
             //featureOffExpand,
             //featureOnExpand
-            //{ ftype: 'grouping' }
-            Ext.create('Ext.grid.feature.GroupingSummary', {
-                id: 'groupSummary',
-                startCollapsed: true,
-                showSummaryRow: false,
-                //groupHeaderTpl: '{name} ({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})'
-                groupHeaderTpl: [
-                    '<div style="color:#d14836; font-weight: bold">{name:this.formatName}<span style="color:green; font-weight: normal">({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})</span></div>',
-                    {
-                        formatName: function(name) {
-                            for(var i=0; i<gGroups.items.length; i++){
-                                 if(name == gGroups.items[i]._groupKey){
-                                    return '<span style="color:green">[' + (i+1) +']</span> ' +  name;
-                                 }
-                            }
-                            //return Ext.String.trim(name);
-                        }
-                    }
-                ]
-            })
+            { ftype: 'grouping' }
+            // Ext.create('Ext.grid.feature.GroupingSummary', {
+            //     id: 'groupSummary',
+            //     startCollapsed: true,
+            //     showSummaryRow: false,
+            //     groupHeaderTpl: '{name} ({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})'
+            //     // groupHeaderTpl: [
+            //     //     '<div style="color:#d14836; font-weight: bold">{name:this.formatName}<span style="color:green; font-weight: normal">({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})</span></div>',
+            //     //     {
+            //     //         formatName: function(name) {
+            //     //             for(var i=0; i<gGroups.items.length; i++){
+            //     //                  if(name == gGroups.items[i]._groupKey){
+            //     //                     return '<span style="color:green">[' + (i+1) +']</span> ' +  name;
+            //     //                  }
+            //     //             }
+            //     //             //return Ext.String.trim(name);
+            //     //         }
+            //     //     }
+            //     // ]
+            // })
         ],
-        masked:true,
+        //masked:true,
         //multiSelect: true,
         // selModel: Ext.create('Ext.selection.CheckboxModel', {
         //     mode: 'SIMPLE',
@@ -197,36 +197,36 @@ Ext.onReady(function() {
                     return '<a class="siteUrl" href="' + getHttpHttps() + value + '" target="_blank" title="go to site">' + value + '</a>';
                 }
             },
-            { text: 'Option', dataIndex: 'siteUrl', width:100, hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    return '<a class="siteUrl" href="http://' + value + '/_bet/panel.aspx" target="_blank" title="go to site">Sport menu</a>';
-                }
-            },
-			{ text: 'Main', dataIndex: 'siteUrl', width:100, hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    return '<a class="siteUrl" href="http://' + value + '/Main.aspx" target="_blank" title="go to site">Main</a>';
-                }
-            },
-            { text: 'Maintenance', dataIndex: 'siteUrl', width:100, hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    return '<a class="siteUrl" href="http://' + value + '/maintenancepg.aspx" target="_blank" title="go to site">Maintenance</a>';
-                }
-            },
-            {text: 'Remote', dataIndex: 'ipAddrL', width:100, hidden:true},
-            { text: 'LiveTV', dataIndex: 'siteUrl', width:100, hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    return '<a class="siteUrl" href="http://' + value + '/_view/LiveTV.aspx" target="_blank" title="go to site">LiveTV</a>';
-                }
-            },{ text: 'JSOdd1', dataIndex: 'siteUrl', width:300, hidden:true,
-                renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
-                    var jsOdds = '<a class="siteUrl" href="http://' + value + '/_view/JSOdds1.aspx" target="_blank" title="go to site">JSOdds1</a>'
-                    + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOdds2.aspx" target="_blank" title="go to site">JSOdds2</a>'
-                    + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOddsFav1.aspx" target="_blank" title="go to site">JSOddsFav1</a>'
-                    + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOddsFav2.aspx" target="_blank" title="go to site">JSOddsFav2</a>';
-                    return jsOdds;
-                }
-            },
-            { text: 'Client', dataIndex: 'clientName', width: 100, hidden: true},
+            // { text: 'Option', dataIndex: 'siteUrl', width:100, hidden:true,
+            //     renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
+            //         return '<a class="siteUrl" href="http://' + value + '/_bet/panel.aspx" target="_blank" title="go to site">Sport menu</a>';
+            //     }
+            // },
+			// { text: 'Main', dataIndex: 'siteUrl', width:100, hidden:true,
+            //     renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
+            //         return '<a class="siteUrl" href="http://' + value + '/Main.aspx" target="_blank" title="go to site">Main</a>';
+            //     }
+            // },
+            // { text: 'Maintenance', dataIndex: 'siteUrl', width:100, hidden:true,
+            //     renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
+            //         return '<a class="siteUrl" href="http://' + value + '/maintenancepg.aspx" target="_blank" title="go to site">Maintenance</a>';
+            //     }
+            // },
+            // {text: 'Remote', dataIndex: 'ipAddrL', width:100, hidden:true},
+            // { text: 'LiveTV', dataIndex: 'siteUrl', width:100, hidden:true,
+            //     renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
+            //         return '<a class="siteUrl" href="http://' + value + '/_view/LiveTV.aspx" target="_blank" title="go to site">LiveTV</a>';
+            //     }
+            // },{ text: 'JSOdd1', dataIndex: 'siteUrl', width:300, hidden:true,
+            //     renderer: function(value, metaData, record, rowIndex, colIndex, store, gridView) {
+            //         var jsOdds = '<a class="siteUrl" href="http://' + value + '/_view/JSOdds1.aspx" target="_blank" title="go to site">JSOdds1</a>'
+            //         + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOdds2.aspx" target="_blank" title="go to site">JSOdds2</a>'
+            //         + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOddsFav1.aspx" target="_blank" title="go to site">JSOddsFav1</a>'
+            //         + ' | ' +'<a class="siteUrl" href="http://' + value + '/_view/JSOddsFav2.aspx" target="_blank" title="go to site">JSOddsFav2</a>';
+            //         return jsOdds;
+            //     }
+            // },
+            // { text: 'Client', dataIndex: 'clientName', width: 100, hidden: true},
             { text: 'Sub Client', dataIndex: 'subClientName', width:150},
             { text: 'Type', dataIndex: 'wsType', width: 60},
             { type:'combo', text: 'IP Local', dataIndex: 'ipAddrL', width:130,
@@ -300,10 +300,10 @@ Ext.onReady(function() {
                 }]
             },
             { 
-                text: 'Folder web', dataIndex: 'folderPath', width:300,
-                editor:{
-                    type:'textfield'
-                }
+                text: 'Folder web', dataIndex: 'folderPath', width:300
+                // ,editor:{
+                //     type:'textfield'
+                // }
             },{ // get folderPath
                 // change icon very very great : http://www.learnsomethings.com/2011/09/25/the-new-extjs4-xtype-actioncolumn-in-a-nutshell/
                 xtype: 'actioncolumn',
@@ -755,169 +755,172 @@ Ext.onReady(function() {
                         else alert('path folder blank')
                     }
                 }]
-            },{ text: 'Modified Date Of Backkup File', dataIndex: 'modifiedDateOfBKFile', width:510,
-                editor:{
-                    type:'textfield'
-                }
-            },{
-                xtype: 'actioncolumn',
-                width: 45,
-                sortable: false,
-                menuDisabled: true,
-                tooltip:'Add Web.config',
-                text:'AW',
-                hidden:true,
-                items: [{
-                    iconCls: 'webConfigCls',
-                    getClass: function(value, meta, record, rowIndex, colIndex) {
-                        var webConfig = record.get('webConfig');
-                        var iconCls = '';
-                        switch (webConfig){
-                            case 0: iconCls='webConfigCls';     break;
-                            case 1: iconCls='checkingCls';  break;
-                            //case 2: iconCls = 'webConfigGetOkCls' ; break;
-                            case 3 : iconCls = 'zipUploadErrCls' ; break;
-                            case 4 : iconCls = 'webConfigSaveOkCls' ; break;
-                        }
-                        return iconCls;
-                    },
-                    handler: function (grid, rowIndex) {
-                        var wcAction = grid.getStore().getAt(rowIndex).get('webConfig');
-                        if(wcAction == 4 ){ // done add
-                            alert('Web.config has added');
-                            return;
-                        }
-                        var siteName =  Ext.getCmp('txtUrlCheckingDefault').getValue();
-                        var isUseUrlCheckingDefault = Ext.getCmp('useUrlCheckingDefault').getValue();
-                        if(isUseUrlCheckingDefault==false) {
-                            siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
-                        }
+            },{ text: 'Modified Date Of Backkup File', dataIndex: 'modifiedDateOfBKFile', width:510
+                // ,editor:{
+                //     type:'textfield'
+                // }
+            }
+            // ,{
+            //     xtype: 'actioncolumn',
+            //     width: 45,
+            //     sortable: false,
+            //     menuDisabled: true,
+            //     tooltip:'Add Web.config',
+            //     text:'AW',
+            //     hidden:true,
+            //     items: [{
+            //         iconCls: 'webConfigCls',
+            //         getClass: function(value, meta, record, rowIndex, colIndex) {
+            //             var webConfig = record.get('webConfig');
+            //             var iconCls = '';
+            //             switch (webConfig){
+            //                 case 0: iconCls='webConfigCls';     break;
+            //                 case 1: iconCls='checkingCls';  break;
+            //                 //case 2: iconCls = 'webConfigGetOkCls' ; break;
+            //                 case 3 : iconCls = 'zipUploadErrCls' ; break;
+            //                 case 4 : iconCls = 'webConfigSaveOkCls' ; break;
+            //             }
+            //             return iconCls;
+            //         },
+            //         handler: function (grid, rowIndex) {
+            //             var wcAction = grid.getStore().getAt(rowIndex).get('webConfig');
+            //             if(wcAction == 4 ){ // done add
+            //                 alert('Web.config has added');
+            //                 return;
+            //             }
+            //             var siteName =  Ext.getCmp('txtUrlCheckingDefault').getValue();
+            //             var isUseUrlCheckingDefault = Ext.getCmp('useUrlCheckingDefault').getValue();
+            //             if(isUseUrlCheckingDefault==false) {
+            //                 siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
+            //             }
 
-                        grid.getStore().getAt(rowIndex).set('webConfig',1);
+            //             grid.getStore().getAt(rowIndex).set('webConfig',1);
 
-                        Ext.Ajax.request({
-                            url: 'checkdate/add-web-config',
-                            params: {
-                                filesParam: filesParam,
-                                siteName: siteName,
-                                wcMode:'addWCF20170508AG',
-                            },
-                            success: function (response) {
-                                // parse jsonString from server
-                                var result = response.responseText.replace(/\r?\n|\r/g,' ');
-                                result = JSON.parse(result);
-                                if(result.success == true){
-                                    // done add web.config
-                                    Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile','...'); // effect text
-                                    Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',4);
-                                }
-                                else{
-                                    Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',3);
-                                }
-                                setTimeout(function(){
-                                    Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile',result.msg);
-                                },500)
+            //             Ext.Ajax.request({
+            //                 url: 'checkdate/add-web-config',
+            //                 params: {
+            //                     filesParam: filesParam,
+            //                     siteName: siteName,
+            //                     wcMode:'addWCF20170508AG',
+            //                 },
+            //                 success: function (response) {
+            //                     // parse jsonString from server
+            //                     var result = response.responseText.replace(/\r?\n|\r/g,' ');
+            //                     result = JSON.parse(result);
+            //                     if(result.success == true){
+            //                         // done add web.config
+            //                         Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile','...'); // effect text
+            //                         Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',4);
+            //                     }
+            //                     else{
+            //                         Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',3);
+            //                     }
+            //                     setTimeout(function(){
+            //                         Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile',result.msg);
+            //                     },500)
 
-                            },
-                            failure: function (response) {
-                                console.log('server-side failure with status code ' + response.status);
-                            }
-                        });
-                    }
-                }]
-            },{
-                xtype: 'actioncolumn',
-                width: 45,
-                sortable: false,
-                menuDisabled: true,
-                tooltip:'Edit Web.config',
-                text:'EW',
-                hidden:true,
-                items: [{
-                    iconCls: 'webConfigCls',
-                    getClass: function(value, meta, record, rowIndex, colIndex) {
-                        var webConfig = record.get('webConfig');
-                        var iconCls = '';
-                        switch (webConfig){
-                            case 0: iconCls='webConfigCls';     break;
-                            case 1: iconCls='checkingCls';  break;
-                            case 2: iconCls = 'webConfigGetOkCls' ; break;
-                            case 3 : iconCls = 'zipUploadErrCls' ; break;
-                            case 4 : iconCls = 'webConfigSaveOkCls' ; break;
-                        }
-                        return iconCls;
-                    },
-                    handler: function (grid, rowIndex) {
-                        var wcAction = grid.getStore().getAt(rowIndex).get('webConfig');
-                        // wcAction 0 - start || 1 - doing || 2 get
-                        var isUseUrlWebConfigForAll = Ext.getCmp('useUrlWebConfigForAll').getValue();
+            //                 },
+            //                 failure: function (response) {
+            //                     console.log('server-side failure with status code ' + response.status);
+            //                 }
+            //             });
+            //         }
+            //     }]
+            // },{
+            //     xtype: 'actioncolumn',
+            //     width: 45,
+            //     sortable: false,
+            //     menuDisabled: true,
+            //     tooltip:'Edit Web.config',
+            //     text:'EW',
+            //     hidden:true,
+            //     items: [{
+            //         iconCls: 'webConfigCls',
+            //         getClass: function(value, meta, record, rowIndex, colIndex) {
+            //             var webConfig = record.get('webConfig');
+            //             var iconCls = '';
+            //             switch (webConfig){
+            //                 case 0: iconCls='webConfigCls';     break;
+            //                 case 1: iconCls='checkingCls';  break;
+            //                 case 2: iconCls = 'webConfigGetOkCls' ; break;
+            //                 case 3 : iconCls = 'zipUploadErrCls' ; break;
+            //                 case 4 : iconCls = 'webConfigSaveOkCls' ; break;
+            //             }
+            //             return iconCls;
+            //         },
+            //         handler: function (grid, rowIndex) {
+            //             var wcAction = grid.getStore().getAt(rowIndex).get('webConfig');
+            //             // wcAction 0 - start || 1 - doing || 2 get
+            //             var isUseUrlWebConfigForAll = Ext.getCmp('useUrlWebConfigForAll').getValue();
 
-                        if(Ext.getCmp('rbWebConfigMode').getValue().rbwc == null || Ext.getCmp('rbWebConfigMode').getValue().rbwc == undefined){
-                            alert('Select tag need edit');
-                            return;
-                        }
-                        if(isUseUrlWebConfigForAll == true && (Ext.getCmp('txtSettingKeyValue').getValue() == '' || Ext.getCmp('txtSettingKeyValue').getValue() == null)){
-                            alert('Setting Key Value is null');
-                            return;
-                        }
-                        if(Ext.getCmp('txtSettingKeyName').getValue() == '' || Ext.getCmp('txtSettingKeyName').getValue() == null){
-                            alert('Setting Key Name is null');
-                            return;
-                        }
+            //             if(Ext.getCmp('rbWebConfigMode').getValue().rbwc == null || Ext.getCmp('rbWebConfigMode').getValue().rbwc == undefined){
+            //                 alert('Select tag need edit');
+            //                 return;
+            //             }
+            //             if(isUseUrlWebConfigForAll == true && (Ext.getCmp('txtSettingKeyValue').getValue() == '' || Ext.getCmp('txtSettingKeyValue').getValue() == null)){
+            //                 alert('Setting Key Value is null');
+            //                 return;
+            //             }
+            //             if(Ext.getCmp('txtSettingKeyName').getValue() == '' || Ext.getCmp('txtSettingKeyName').getValue() == null){
+            //                 alert('Setting Key Name is null');
+            //                 return;
+            //             }
 
-                        if(wcAction == 4 ){ // done change
-                            alert('Web.config has changed');
-                            return;
-                        }
-                        // check url
-                        //alert(wcAction);
-                        if(wcAction != 2) grid.getStore().getAt(rowIndex).set('webConfig',1);
-                        //if(wcAction == 2) Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile','...'); // effect text
-                        var siteName =  Ext.getCmp('txtUrlCheckingDefault').getValue();
-                        var isUseUrlCheckingDefault = Ext.getCmp('useUrlCheckingDefault').getValue();
-                        if(isUseUrlCheckingDefault==false) {
-                            siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
-                        }
+            //             if(wcAction == 4 ){ // done change
+            //                 alert('Web.config has changed');
+            //                 return;
+            //             }
+            //             // check url
+            //             //alert(wcAction);
+            //             if(wcAction != 2) grid.getStore().getAt(rowIndex).set('webConfig',1);
+            //             //if(wcAction == 2) Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile','...'); // effect text
+            //             var siteName =  Ext.getCmp('txtUrlCheckingDefault').getValue();
+            //             var isUseUrlCheckingDefault = Ext.getCmp('useUrlCheckingDefault').getValue();
+            //             if(isUseUrlCheckingDefault==false) {
+            //                 siteName = getHttpHttps() + grid.getStore().getAt(rowIndex).get('siteUrl');
+            //             }
 
-                        Ext.Ajax.request({
-                            url: 'checkdate/change-web-config',
-                            params: {
-                                filesParam: filesParam,
-                                siteName: siteName,
-                                settingKeyName:Ext.getCmp('txtSettingKeyName').getValue(),
-                                settingKeyValue:isUseUrlWebConfigForAll==true?Ext.getCmp('txtSettingKeyValue').getValue():grid.getStore().getAt(rowIndex).get('modifiedDateOfBKFile'),
-                                wcMode:Ext.getCmp('rbWebConfigMode').getValue().rbwc,
-                                wcAction:wcAction==2?"w":"r"
-                            },
-                            success: function (response) {
-                                // parse jsonString from server
-                                var result = response.responseText.replace(/\r?\n|\r/g,' ');
-                                result = JSON.parse(result);
-                                if(result.success == true){
-                                    if(wcAction != 2){
-                                        Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',2); // get url value ok
-                                    }
-                                    else{
-                                        // done editing web.config
-                                        Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile','...'); // effect text
-                                        Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',4);
-                                    }
-                                }
-                                else{
-                                    Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',3);
-                                }
-                                setTimeout(function(){
-                                    Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile',result.msg);
-                                },500)
+            //             Ext.Ajax.request({
+            //                 url: 'checkdate/change-web-config',
+            //                 params: {
+            //                     filesParam: filesParam,
+            //                     siteName: siteName,
+            //                     settingKeyName:Ext.getCmp('txtSettingKeyName').getValue(),
+            //                     settingKeyValue:isUseUrlWebConfigForAll==true?Ext.getCmp('txtSettingKeyValue').getValue():grid.getStore().getAt(rowIndex).get('modifiedDateOfBKFile'),
+            //                     wcMode:Ext.getCmp('rbWebConfigMode').getValue().rbwc,
+            //                     wcAction:wcAction==2?"w":"r"
+            //                 },
+            //                 success: function (response) {
+            //                     // parse jsonString from server
+            //                     var result = response.responseText.replace(/\r?\n|\r/g,' ');
+            //                     result = JSON.parse(result);
+            //                     if(result.success == true){
+            //                         if(wcAction != 2){
+            //                             Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',2); // get url value ok
+            //                         }
+            //                         else{
+            //                             // done editing web.config
+            //                             Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile','...'); // effect text
+            //                             Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',4);
+            //                         }
+            //                     }
+            //                     else{
+            //                         Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('webConfig',3);
+            //                     }
+            //                     setTimeout(function(){
+            //                         Ext.getCmp('gridSite').getStore().getAt(rowIndex).set('modifiedDateOfBKFile',result.msg);
+            //                     },500)
 
-                            },
-                            failure: function (response) {
-                                console.log('server-side failure with status code ' + response.status);
-                            }
-                        });
-                    }
-                }]
-            }],
+            //                 },
+            //                 failure: function (response) {
+            //                     console.log('server-side failure with status code ' + response.status);
+            //                 }
+            //             });
+            //         }
+            //     }
+            // ]
+            // }
+        ],
         tbar:[{
             xtype:'button',
             text:'Refresh',
