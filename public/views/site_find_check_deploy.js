@@ -159,26 +159,26 @@ Ext.onReady(function() {
             //feature
             //featureOffExpand,
             //featureOnExpand
-            { ftype: 'grouping' }
-            // Ext.create('Ext.grid.feature.GroupingSummary', {
-            //     id: 'groupSummary',
-            //     startCollapsed: true,
-            //     showSummaryRow: false,
-            //     groupHeaderTpl: '{name} ({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})'
-            //     // groupHeaderTpl: [
-            //     //     '<div style="color:#d14836; font-weight: bold">{name:this.formatName}<span style="color:green; font-weight: normal">({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})</span></div>',
-            //     //     {
-            //     //         formatName: function(name) {
-            //     //             for(var i=0; i<gGroups.items.length; i++){
-            //     //                  if(name == gGroups.items[i]._groupKey){
-            //     //                     return '<span style="color:green">[' + (i+1) +']</span> ' +  name;
-            //     //                  }
-            //     //             }
-            //     //             //return Ext.String.trim(name);
-            //     //         }
-            //     //     }
-            //     // ]
-            // })
+            //{ ftype: 'grouping' }
+            Ext.create('Ext.grid.feature.GroupingSummary', {
+                id: 'groupSummary',
+                startCollapsed: true,
+                showSummaryRow: false,
+                //groupHeaderTpl: '{name} ({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})'
+                groupHeaderTpl: [
+                    '<div style="color:#d14836; font-weight: bold">{name:this.formatName}<span style="color:green; font-weight: normal">({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})</span></div>',
+                    {
+                        formatName: function(name) {
+                            for(var i=0; i<gGroups.items.length; i++){
+                                 if(name == gGroups.items[i]._groupKey){
+                                    return '<span style="color:green">[' + (i+1) +']</span> ' +  name;
+                                 }
+                            }
+                            //return Ext.String.trim(name);
+                        }
+                    }
+                ]
+            })
         ],
         //masked:true,
         //multiSelect: true,
@@ -1457,8 +1457,8 @@ Ext.onReady(function() {
                     columns:3,
                     vertical: false,
                     items: [
-                        { boxLabel: 'HTTPS', name: 'rbProtocol', inputValue: 'https' },
-                        { boxLabel: 'HTTP', name: 'rbProtocol', inputValue: 'http', checked: true },
+                        { boxLabel: 'HTTPS', name: 'rbProtocol', inputValue: 'https', checked: true  },
+                        { boxLabel: 'HTTP', name: 'rbProtocol', inputValue: 'http'},
                     ],
                     listeners:{
                         change:function(){
