@@ -1517,7 +1517,7 @@ Ext.onReady(function() {
                     boxLabel :'Backup Full',
                     labelWidth:150,
                     width:170,
-                    value:true
+                    value:false
                 },{
                     xtype: 'radiogroup',
                     id:'rbBatMode',
@@ -2553,6 +2553,7 @@ function dzFileNameListGen(fileList,folderPath){
     for(var i=0; i<fileList.length; i++){
         strFileList += folderPath + '/' + fileList[i].fileName + '\r\n';
     }
+    strFileList += folderPath + '/Web.config\r\n';
     return strFileList;
 }
 function formatCurrency(num){
