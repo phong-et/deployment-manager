@@ -542,7 +542,7 @@ Ext.onReady(function() {
                                             
                                             Ext.Ajax.request({
                                                 url: 'checkdate/get-date-modified',
-                                                params:{filesParam:filesParam, siteName:siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
+                                                params:{filesParam: Ext.getCmp('filesParam').getValue(), siteName:siteName, serverId: serverId, skipAuth: !Ext.getCmp('cbbAuth').getValue()},
                                                 success: function(response) {
                                                     // parse jsonString from server
                                                     var jsonObjsFromSite = JSON.parse(response.responseText);
