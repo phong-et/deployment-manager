@@ -394,11 +394,19 @@ var filterJson = function (json) {
   var exportedJson = [];
   json.forEach(e => {
     var obj = {};
-    obj.siteUrl = "http://" + e.siteUrl;
-    obj.clientName = e.clientName;
-    obj.subClientName = e.LIGA365;
+    obj.siteUrl = e.siteUrl;
+    //obj.clientName = e.LIGA;
+    obj.subClientName = e.subClientName;
     obj.wsType = e.wsType;
     obj.remotePort = e.remotePort;
+    obj.aio = 0
+    obj.batUpload = ""
+    obj.checked =  0
+    obj.folderPath = ""
+    obj.ipAddrL = e.ipAddrL
+    obj.serverId = e.serverId
+    obj.wsType = e.wsType,
+    obj.zipUpload = e.zipUpload
     exportedJson.push(obj);
   });
   return exportedJson;
