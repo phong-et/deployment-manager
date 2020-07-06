@@ -1,7 +1,7 @@
 /**
  * Created by Phillipet on 11/20/2015.
  */
-
+var log = console.log
 function getQueryParam(name, queryString) {
     var match = RegExp(name + '=([^&]*)').exec(queryString || location.search);
     return match && decodeURIComponent(match[1]);
@@ -94,7 +94,7 @@ var jsonObjsZipFile;
 // format: <host>/GetDateModifiedOfFiles.aspx?files=Default8.aspx,_view/BettingRules8..aspx,bin/wsligweb_v6.dll
 var filesParam = '';
 
-var urlCheckingDefault = 'http://localhost/wsligweb_v6';
+var urlCheckingDefault = 'http://localhost/LIGA_New_v8_Live';
 
 // contain info failed files
 var jsonFailed = [];
@@ -494,7 +494,10 @@ Ext.onReady(function() {
                         if(pathFolder.substr(pathFolder.length-1,1) == '\\') {
                             bkFile = pathFolder.substr(0, pathFolder.length - 1) + ".zip";
                         }
-                        var nameBatFile = grid.getStore().getAt(rowIndex).get('ipAddrL') + '_' + grid.getStore().getAt(rowIndex).get('subClientName') + '_' + grid.getStore().getAt(rowIndex).get('siteUrl') + "_" + Ext.getCmp('rbBatMode').getValue().rb + ".bat";
+                        var nameBatFile = grid.getStore().getAt(rowIndex).get('ipAddrL') + '_' + 
+                        grid.getStore().getAt(rowIndex).get('subClientName') + '_' + 
+                        //grid.getStore().getAt(rowIndex).get('siteUrl') + "_" + 
+                        Ext.getCmp('rbBatMode').getValue().rb + ".bat";
                         // create nameBkFile
                         var today = new Date();
                         var dd = today.getDate();
@@ -521,6 +524,7 @@ Ext.onReady(function() {
                             isBKFull:Ext.getCmp('cbBackupFull').getValue(),
                             serverId:grid.getStore().getAt(rowIndex).get('serverId'), 
                             skipAuth:!Ext.getCmp('cbbAuth').getValue(),
+                            isStart:Ext.getCmp('cbIsStart').getValue(),
                         };
                         // create request to server
                         grid.getStore().getAt(rowIndex).set('batUpload',' '); // start uploading
@@ -1469,22 +1473,28 @@ Ext.onReady(function() {
             },{
                 xtype:'checkbox',
                 id:'useUrlCheckingDefault',
-                boxLabel :'Use this url',
+                boxLabel :'Use Specific URL',
                 labelWidth:150,
                 width:300,
-                value:false
+                value: false,
+                listeners:{
+                    change:function(cb,newValue){
+                        Ext.getCmp('txtUrlCheckingDefault').setDisabled(!newValue)
+                    }
+                }
             },{
                 xtype:'textfield',
-                fieldLabel :'Url default',
-                labelWidth:70,
-                width:300,
+                fieldLabel :'Specific URL',
+                labelWidth:100,
+                disabled: true,
+                width:400,
                 id:'txtUrlCheckingDefault',
                 name:'txtUrlCheckingDefault',
                 value:urlCheckingDefault,
                 listeners:{
-                    focus:function(){
-                        Ext.getCmp('useUrlCheckingDefault').setValue(true);
-                    }
+                    // focus:function(){
+                    //     Ext.getCmp('useUrlCheckingDefault').setValue(true);
+                    // }
                 }
             },{
                 xtype:'hiddenfield',
@@ -1495,11 +1505,11 @@ Ext.onReady(function() {
                 value:filesParam
             },{
                 xtype:'textfield',
-                fieldLabel :'Deploy file name',
+                fieldLabel :'Zip File Name',
                 id:'dzFileName',
                 editable:false,
-                labelWidth:150,
-                width:300,
+                labelWidth:100,
+                width:400,
                 value:filesParam
             },{
                 // Fieldset in Column 2 - collapsible via checkbox, collapsed by default, contains a panel
@@ -1512,12 +1522,24 @@ Ext.onReady(function() {
                 collapsed: false,
                 //layout:'anchor',
                 items:[{
-                    xtype:'checkbox',
-                    id:'cbBackupFull',
-                    boxLabel :'Backup Full',
-                    labelWidth:150,
-                    width:170,
-                    value:false
+                    xtype: 'radiogroup',
+                    columns:3,
+                    vertical: false,
+                    items:[{
+                        xtype:'checkbox',
+                        id:'cbBackupFull',
+                        boxLabel :'Backup Full',
+                        labelWidth:150,
+                        width:170,
+                        value:false
+                    },{
+                        xtype:'checkbox',
+                        id:'cbIsStart',
+                        boxLabel :'Auto Run Bat File ',
+                        labelWidth:150,
+                        width:170,
+                        value:true
+                    }]
                 },{
                     xtype: 'radiogroup',
                     id:'rbBatMode',
