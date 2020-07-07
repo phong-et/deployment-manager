@@ -1175,17 +1175,19 @@ Ext.onReady(function () {
                     Ext.getCmp('formConfigPage').setHidden(false);
                 }
             }
-        }, {
-            xtype: 'button',
-            text: 'Share FR',
-            iconCls: 'shareCls',
-            id: 'btShare',
-            listeners: {
-                click: function () {
-                    Ext.getCmp('gridShareRecord').setHidden(false);
-                }
-            }
-        }],
+        }
+            // , {
+            //     xtype: 'button',
+            //     text: 'Share FR',
+            //     iconCls: 'shareCls',
+            //     id: 'btShare',
+            //     listeners: {
+            //         click: function () {
+            //             Ext.getCmp('gridShareRecord').setHidden(false);
+            //         }
+            //     }
+            // }
+        ],
         listeners: {
             viewready: function (grid) {
                 //socket.emit('getSubClientsByClient','LIGA');
@@ -2127,44 +2129,45 @@ Ext.onReady(function () {
         },
         autoLoad: true
     });
-    var gridShare = Ext.create('Ext.grid.Panel', {
-        id: 'gridShareRecord',
-        title: 'User Online and Share Found Records',
-        hidden: true,
-        header: true,
-        frame: true,
-        collapsible: true,
-        resizable: true,
-        draggable: true,
-        height: 200,
-        width: 500,
-        style: { marginBottom: '20px', zIndex: 999999, position: 'absolute', top: '0px', left: '0px' },
-        store: stUser,
-        selType: 'cellmodel',
-        //plugins: {ptype: 'rowediting',clicksToEdit:2},
-        //features: [],
-        masked: true,
-        columns: [
-            new Ext.grid.RowNumberer({ text: 'STT', width: 50 }),
-            { text: 'User Name', dataIndex: 'userName', width: 100 },
-            { text: 'Record Share Id', dataIndex: 'socketId', width: 200 },
-            { text: 'Status', dataIndex: 'status', width: 80 },
-        ],
-        tools: [{
-            type: 'close',
-            handler: function (event, toolEl, panelHeader) {
-                // refresh logic
-                Ext.getCmp('gridShareRecord').setHidden(true);
-            }
-        }],
-        listeners: {
-            itemclick: function (view, record, item, index, e, eOpts) {
-                socket.emit('shareFR', record.data["socketId"]);
+    // Disable
+    // var gridShare = Ext.create('Ext.grid.Panel', {
+    //     id: 'gridShareRecord',
+    //     title: 'User Online and Share Found Records',
+    //     hidden: true,
+    //     header: true,
+    //     frame: true,
+    //     collapsible: true,
+    //     resizable: true,
+    //     draggable: true,
+    //     height: 200,
+    //     width: 500,
+    //     style: { marginBottom: '20px', zIndex: 999999, position: 'absolute', top: '0px', left: '0px' },
+    //     store: stUser,
+    //     selType: 'cellmodel',
+    //     //plugins: {ptype: 'rowediting',clicksToEdit:2},
+    //     //features: [],
+    //     masked: true,
+    //     columns: [
+    //         new Ext.grid.RowNumberer({ text: 'STT', width: 50 }),
+    //         { text: 'User Name', dataIndex: 'userName', width: 100 },
+    //         { text: 'Record Share Id', dataIndex: 'socketId', width: 200 },
+    //         { text: 'Status', dataIndex: 'status', width: 80 },
+    //     ],
+    //     tools: [{
+    //         type: 'close',
+    //         handler: function (event, toolEl, panelHeader) {
+    //             // refresh logic
+    //             Ext.getCmp('gridShareRecord').setHidden(true);
+    //         }
+    //     }],
+    //     listeners: {
+    //         itemclick: function (view, record, item, index, e, eOpts) {
+    //             socket.emit('shareFR', record.data["socketId"]);
 
-            }
-        },
-        renderTo: Ext.getBody()
-    });
+    //         }
+    //     },
+    //     renderTo: Ext.getBody()
+    // });
 
     Ext.create('Ext.form.Panel', {
         id: 'formIEPort',
