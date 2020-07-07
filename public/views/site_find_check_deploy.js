@@ -497,7 +497,8 @@ Ext.onReady(function () {
                         if (pathFolder.substr(pathFolder.length - 1, 1) == '\\') {
                             bkFile = pathFolder.substr(0, pathFolder.length - 1) + ".zip";
                         }
-                        var nameBatFile = grid.getStore().getAt(rowIndex).get('ipAddrL') + '_' +
+                        var nameBatFile = 
+                            //grid.getStore().getAt(rowIndex).get('ipAddrL') + '_' +
                             grid.getStore().getAt(rowIndex).get('subClientName') + '_' +
                             //grid.getStore().getAt(rowIndex).get('siteUrl') + "_" + 
                             Ext.getCmp('rbBatMode').getValue().rb + ".bat";
