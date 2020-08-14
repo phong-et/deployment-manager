@@ -275,7 +275,7 @@ Ext.onReady(function () {
                 text: 'RM',
                 items: [{
                     iconCls: 'remoteCls',
-                    handler: function (grid, rowIndex) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
                         // local project
                         // Ext.Ajax.request({
                         //     params:{serverIp: grid.getStore().getAt(rowIndex).get('ipAddrL')},
@@ -288,9 +288,10 @@ Ext.onReady(function () {
                         //     }
                         // });
                         // another project
+                        var recordIndex = grid.getStore().indexOf(record)
                         Ext.Ajax.request({
                             method: 'GET',
-                            url: 'http://localhost:3000/remote/' + grid.getStore().getAt(rowIndex).get('ipAddrL'),
+                            url: 'http://localhost:3000/remote/' + grid.getStore().getAt(recordIndex).get('ipAddrL'),
                             success: function (response) {
                                 console.log(response)
                             },
