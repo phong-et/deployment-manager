@@ -724,7 +724,8 @@ Ext.onReady(function () {
                 text: 'Refresh',
                 items: [{
                     iconCls: 'refreshGridSiteCls',
-                    handler: function (grid, rowIndex) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
+                        rowIndex = grid.getStore().indexOf(record)
                         if (Ext.getCmp('gridSite').getStore().getAt(rowIndex).get('zipUpload') != '')
                             Ext.getCmp('gridSite').getStore().getAt(rowIndex).set({ checked: 0, folderPath: '', batUpload: '', zipUpload: 0, modifiedDateOfBKFile: '', webConfig: 0 });
                         else
@@ -741,7 +742,8 @@ Ext.onReady(function () {
                 text: 'Create Del',
                 items: [{
                     iconCls: 'refreshGridSiteCls',
-                    handler: function (grid, rowIndex, colIndex, item, e, record, row) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
+                        rowIndex = grid.getStore().indexOf(record)
                         var path = record.get('folderPath');
                         if (path != '') {
                             var data = {
