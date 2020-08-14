@@ -276,18 +276,6 @@ Ext.onReady(function () {
                 items: [{
                     iconCls: 'remoteCls',
                     handler: function(grid, rowIndex, colIndex, item, e, record) {
-                        // local project
-                        // Ext.Ajax.request({
-                        //     params:{serverIp: grid.getStore().getAt(rowIndex).get('ipAddrL')},
-                        //     url: 'checkdate/remote',
-                        //     success: function(response) {
-                        //       console.log(response)
-                        //     },
-                        //     failure: function(response) {
-                        //        alert(JSON.stringify(response))
-                        //     }
-                        // });
-                        // another project
                         var recordIndex = grid.getStore().indexOf(record)
                         Ext.Ajax.request({
                             method: 'GET',
@@ -325,7 +313,8 @@ Ext.onReady(function () {
                         else iconCls = 'hasFolderCls';
                         return iconCls;
                     },
-                    handler: function (grid, rowIndex) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
+                        rowIndex = grid.getStore().indexOf(record)
                         // prevent click after done
                         if (grid.getStore().getAt(rowIndex).get('folderPath') != '') return;
 
@@ -384,7 +373,8 @@ Ext.onReady(function () {
                         }
                         return iconCls;
                     },
-                    handler: function (grid, rowIndex) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
+                        rowIndex = grid.getStore().indexOf(record)
 
                         var dzFileName = Ext.getCmp('dzFileName').getValue();
                         if (dzFileName == '') {
@@ -479,7 +469,8 @@ Ext.onReady(function () {
                         else iconCls = 'batUploadedCls';
                         return iconCls;
                     },
-                    handler: function (grid, rowIndex) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
+                        rowIndex = grid.getStore().indexOf(record)
                         // prevent click after done
                         if (grid.getStore().getAt(rowIndex).get('batUpload') == true) return;
                         //if(grid.getStore().getAt(rowIndex).get('folderPath') == '') { Ext.Msg.alert('Missing values','Folder path missing'); return};
@@ -649,7 +640,8 @@ Ext.onReady(function () {
                         }
                         return iconCls;
                     },
-                    handler: function (grid, rowIndex) {
+                    handler: function(grid, rowIndex, colIndex, item, e, record) {
+                        rowIndex = grid.getStore().indexOf(record)
                         //alert(this.items[0].iconCls);
                         //this.setIconCls('checkingCls');
                         if (grid.getStore().getAt(rowIndex).get('checked') == 2) return;
