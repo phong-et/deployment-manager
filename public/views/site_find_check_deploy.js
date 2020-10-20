@@ -168,14 +168,37 @@ Ext.onReady(function () {
                 groupHeaderTpl: [
                     '<div style="color:#d14836; font-weight: bold">{name:this.formatName}<span style="color:green; font-weight: normal">({rows.length} {[values.rows.length > 1 ? "Records" : "Record"]})</span></div>',
                     {
-                        formatName: function (name) {
-                            for (var i = 0; i < gGroups.items.length; i++) {
-                                if (name == gGroups.items[i]._groupKey) {
-                                    return '<span style="color:green">[' + (i + 1) + ']</span> ' + name;
-                                }
-                            }
-                            //return Ext.String.trim(name);
-                        }
+                        // formatName: function (name) {
+                        //     for (var i = 0; i < gGroups.items.length; i++) {
+                        //         if (name == gGroups.items[i]._groupKey) {
+                        //             return '<span style="color:green">[' + (i + 1) + ']</span> ' + name;
+                        //         }
+                        //     }
+                        //     //return Ext.String.trim(name);
+                        // }
+                        formatName: name => {
+							for (let i = 0; i < gGroups.items.length; i++) {
+								if (name.toString() === gGroups.items[i]._groupKey.toString()) {
+									switch (name) {
+										//case "10.168.106.177": name = name + ' [Meta Service]'; break
+										//case "109-109-109": name = name + ' [Cache Service]'; break
+										//case "10.168.109.6": name = name + ' [Test Server]'; break
+										case "10.168.106.69":
+										case "10.168.106.92":
+										//case "77-78-79":
+										case "10.168.106.110":
+										case "10.168.106.173": // need check again
+											//case "119-120-121":
+											name = name + ' [Failed Runbat]'; break
+										case "10.168.106.117":
+											//case "119-120-121":
+											name = name + ' [Failed Touchcan]'; break
+										case "10.168.106.119": name = name + ' [Failed Touchcan & Runbat]'; break
+									}
+									return '<span style="color:green">[' + (i + 1) + ']</span> ' + name;
+								}
+							}
+						}
                     }
                 ]
             })
